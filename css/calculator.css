@@ -1,0 +1,127 @@
+/*
+	Using a 10% space on both sides of the page and 5% padding on top and bottom
+*/
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+
+	position: relative;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+
+}
+
+body {
+	padding: 5% 10%;
+	background: #eee;
+}
+
+[class*='col-'] {
+	margin: 0;
+	float: left;
+	height: 100%;
+}
+
+.row:after, .row2:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.col-1-8 	{	width: 12.5%; }
+.col-2-8	{	width: 25%; }
+.col-3-8	{	width: 37.5%; }
+.col-4-8	{	width: 50%; }
+.col-5-8	{	width: 62.5%; }
+.col-6-8	{	width: 75%; }
+.col-7-8	{	width: 87.5%; }
+.col-8-8	{ 	width: 100%; }
+
+.row, .row2 {
+	display: block;
+	width: 100%;
+	height: 70px;
+	margin: 0;
+	padding: 0;
+}
+
+.row2 {
+	height: 140px;
+}
+
+#calculator {
+	background: #555;
+	box-shadow: 0 0px 2px black;
+}
+
+button {
+	border-radius: 0;
+	height: 100%;
+	border: 0;
+	background: #666;
+	color: white;
+	font-size: 17pt;
+	-webkit-transition: 0.1s all;
+	-moz-transition: 0.1s all;
+	-o-transition: 0.1s all;
+	-ms-transition: 0.1s all;
+	transition: 0.1s all;
+
+	font-weight: 100;
+}
+button:hover {
+	background: #454545;
+}
+
+#expression, #result {
+	text-align: right;
+	line-height: 70px;
+	padding-right: 20px;
+	font-size: 45pt;
+	background: white;
+	border: 0;
+}
+
+#expression {
+	z-index: 103;
+	color: #444;
+	border: 1px solid #444;
+	border-bottom: none;
+}
+#result {
+	z-index: 102;
+	font-size: 28pt;
+	color: #666;
+	border-left: 1px solid #444;
+	border-right: 1px solid #444;
+}
+
+#btn_num9, #btn_num6, #btn_num3, #btn_equals {
+	border-right: 1px solid #222;
+	z-index: 101;
+	/* box-shadow: 2px 3px 2px black; */
+}
+[id*="btn_num"], #btn_point, #btn_equals {
+	background: #444;
+	font-size: 24pt;
+}
+[id*="btn_num"]:hover, #btn_point:hover, #btn_equals:hover {
+	background: #333;
+}
+
+#btn_div, #btn_mul, #btn_sub, #btn_add {
+	background: #555;
+	z-index: 100;
+	border-right: 1px solid #222;
+}
+
+#btn_div:hover, #btn_mul:hover, #btn_sub:hover, #btn_add:hover {
+	background: #444;
+}
