@@ -50,12 +50,97 @@
 				<button id="btn_num0" class="col-1-8">0</button>
 				<button id="btn_equals" class="col-1-8">=</button>
 				<button id="btn_add" class="col-1-8">+</button>
-				<button id="btn_npr" class="col-1-8"><sup>n</sup>P<sub>r</sub></button>
-				<button id="btn_ncr" class="col-1-8"><sup>n</sup>C<sub>r</sub></button>
+				<button id="btn_lbra" class="col-1-8">(</button>
+				<button id="btn_rbra" class="col-1-8">)</button>
 				<button id="btn_exp" class="col-1-8">e<sup>x</sup></button>
 				<button id="btn_ln" class="col-1-8">ln</button>
 			</div>
 		</div>
 	</div>
+
+	<script type="text/javascript">
+	function $(expr) {
+		var res = document.querySelectorAll(expr);
+		if(res.length == 1) return res[0];
+		return res;
+	}
+
+	var txt_expr = $("#expression"),
+		lbl_res = $("#result");
+
+	function evaluate_expression() {
+		var expr = txt_expr.value;
+		var res = 0;
+		try {
+			with(Math) {
+				res = eval(expr);
+				lbl_res.innerHTML = res;
+			}
+		}
+		catch(e) {
+			lbl_res.innerHTML = "Syntax Error!";
+		}
+	}
+
+
+	var btns = $("button");
+
+	for(var b in btns) {
+		btns[b].addEventListener("click", function(e) {
+			var str = "";
+
+			switch(this.innerHTML) {
+				case "DEL":
+					txt_expr.value = txt_expr.substr(0, txt_expr.length-1);
+					return;
+
+				case "CONST":
+					// YET TO BE IMPLEMENTED!
+					return;
+
+				case "=":
+					evaluate_expression();
+					return;
+
+				case "sin":
+				case "cos":
+				case "tan":
+				case "asin":
+				case "acos":
+				case "atan":
+				case "log10":
+				case "ln":
+					str = this.innerHTML + "(";
+					break;
+
+				case "\u221Ax":
+					str = "sqrt(";
+					break;
+
+				case "x<sup>2</sup>":
+					str = "^2";
+					break;
+
+				case "e<sup>x</sup>":
+					str = "exp(";
+						break;
+
+				case "\u00F7":
+					str = "/";
+					break;
+
+				case "\u00D7":
+					str = "*";
+					break;
+
+				default:
+					str = this.innerHTML;
+			}
+			
+			txt_expr.value += str;
+			return true;
+		}, false);
+	}
+	</script>
 </body>
 </html>
