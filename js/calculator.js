@@ -17,8 +17,8 @@ function evaluate_expression() {
 		return x * fact(x-1);
 	}
 	try {
-		expr = expr.replace(/([^\d]*)(\d+)\^(\d+)/, "$1pow($2,$3)");
-		expr = expr.replace(/([^\d]*)(\d+)!/, "$1fact($2)");
+		expr = expr.replace(/([^\d]*)(\d+)\^(\d+)/g, "$1pow($2,$3)");
+		expr = expr.replace(/([^\d]*)(\d+)!/g, "$1fact($2)");
 		with(Math) {
 			res = eval(expr);
 			lbl_res.innerHTML = res || 0;
