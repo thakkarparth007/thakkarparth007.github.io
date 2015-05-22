@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8">
 	<title>Calculator (Spider Inductions) | Parth Thakkar</title>
 	<link rel="stylesheet" type="text/css" href="./css/calculator.css">
 </head>
@@ -15,132 +16,140 @@
 		</div>
 
 		<div id="button_container">
-			<div class="row">
-				<button id="btn_num7" class="col-1-8">7</button>
-				<button id="btn_num8" class="col-1-8">8</button>
-				<button id="btn_num9" class="col-1-8">9</button>
-				<button id="btn_div" class="col-1-8">&divide;</button>
-				<button id="btn_sin" class="col-1-8">sin</button>
-				<button id="btn_cos" class="col-1-8">cos</button>
-				<button id="btn_tan" class="col-1-8">tan</button>
-				<button id="btn_del" class="col-1-8">DEL</button>
+			<div id="main_pane">
+				<div class="row">
+					<button id="btn_num7" class="col-1-3">7</button>
+					<button id="btn_num8" class="col-1-3">8</button>
+					<button id="btn_num9" class="col-1-3">9</button>
+				</div>
+				<div class="row">
+					<button id="btn_num4" class="col-1-3">4</button>
+					<button id="btn_num5" class="col-1-3">5</button>
+					<button id="btn_num6" class="col-1-3">6</button>
+				</div>
+				<div class="row">
+					<button id="btn_num1" class="col-1-3">1</button>
+					<button id="btn_num2" class="col-1-3">2</button>
+					<button id="btn_num3" class="col-1-3">3</button>
+				</div>
+				<div class="row">
+					<button id="btn_point" class="col-1-3">.</button>
+					<button id="btn_num0" class="col-1-3">0</button>
+					<button id="btn_equals" class="col-1-3">=</button>
+				</div>
 			</div>
-			<div class="row">
-				<button id="btn_num4" class="col-1-8">4</button>
-				<button id="btn_num5" class="col-1-8">5</button>
-				<button id="btn_num6" class="col-1-8">6</button>
-				<button id="btn_mul" class="col-1-8">&times;</button>
-				<button id="btn_asin" class="col-1-8">asin</button>
-				<button id="btn_acos" class="col-1-8">acos</button>
-				<button id="btn_atan" class="col-1-8">atan</button>
-				<button id="btn_const" class="col-1-8">CONST</button>
+			<div id="ops_pane">
+				<button id="btn_del">DEL</button>
+				<button id="btn_div">&divide;</button>
+				<button id="btn_mul">&times;</button>
+				<button id="btn_sub">-</button>
+				<button id="btn_add">+</button>
 			</div>
-			<div class="row">
-				<button id="btn_num1" class="col-1-8">1</button>
-				<button id="btn_num2" class="col-1-8">2</button>
-				<button id="btn_num3" class="col-1-8">3</button>
-				<button id="btn_sub" class="col-1-8">-</button>
-				<button id="btn_square" class="col-1-8">x<sup>2</sup></button>
-				<button id="btn_sqrt" class="col-1-8">&radic;x</button>
-				<button id="btn_pow" class="col-1-8">x<sup>n</sup></button>
-				<button id="btn_log10" class="col-1-8">log10</button>
+			<div id="scientific_pane">
+				<div class="row">
+					<button id="btn_sin" class="col-2-8">sin</button>
+					<button id="btn_cos" class="col-2-8">cos</button>
+					<button id="btn_tan" class="col-2-8">tan</button>
+					<button id="btn_const" class="col-2-8">CONST</button>
+				</div>
+				<div class="row">
+					<button id="btn_asin" class="col-2-8">asin</button>
+					<button id="btn_acos" class="col-2-8">acos</button>
+					<button id="btn_atan" class="col-2-8">atan</button>
+					<button id="btn_fact" class="col-2-8">n!</button>
+				</div>
+				<div class="row">
+					<button id="btn_square" class="col-2-8">x<sup>2</sup></button>
+					<button id="btn_sqrt" class="col-2-8">&radic;x</button>
+					<button id="btn_pow" class="col-2-8">x<sup>n</sup></button>
+					<button id="btn_log10" class="col-2-8">log10</button>
+				</div>
+				<div class="row">
+					<button id="btn_lbra" class="col-2-8">(</button>
+					<button id="btn_rbra" class="col-2-8">)</button>
+					<button id="btn_exp" class="col-2-8">e<sup>x</sup></button>
+					<button id="btn_ln" class="col-2-8">ln</button>
+				</div>
 			</div>
-			<div class="row">
-				<button id="btn_point" class="col-1-8">.</button>
-				<button id="btn_num0" class="col-1-8">0</button>
-				<button id="btn_equals" class="col-1-8">=</button>
-				<button id="btn_add" class="col-1-8">+</button>
-				<button id="btn_lbra" class="col-1-8">(</button>
-				<button id="btn_rbra" class="col-1-8">)</button>
-				<button id="btn_exp" class="col-1-8">e<sup>x</sup></button>
-				<button id="btn_ln" class="col-1-8">ln</button>
+
+			<div id="const_pane" class="hidden">
+				<span id="close_const_pane">X</span>
+				<div class="row">
+					<button id="btn_constPI" class="col-2-8">
+						&pi;
+						<span class="const_help">Pi</span>
+					</button>
+					<button id="btn_constE" class="col-2-8">
+						e
+						<span class="const_help">Natural log base</span>
+					</button>
+					<button id="btn_constg" class="col-2-8">
+						g
+						<span class="const_help">Accl. due to gravity</span>
+					</button>
+					<button id="btn_constG" class="col-2-8">
+						G
+						<span class="const_help">Gravitational constant</span>
+					</button>
+				</div>
+				<div class="row">
+					<button id="btn_constR" class="col-2-8">
+						R
+						<span class="const_help">Avagadro Constant</span>
+					</button>
+					<button id="btn_constK" class="col-2-8">
+						k<sub>B</sub>
+						<span class="const_help">Boltzmann Constant</span>
+					</button>
+					<button id="btn_constME" class="col-2-8">
+						M<sub>E</sub>
+						<span class="const_help">Earth's Mass</span>
+					</button>
+					<button id="btn_constRE" class="col-2-8">
+						R<sub>E</sub>
+						<span class="const_help">Earth's Radius</span>
+					</button>
+				</div>
+				<div class="row">
+					<button id="btn_conste" class="col-2-8">
+						e
+						<span class="const_help">Electron Charge</span>
+					</button>
+					<button id="btn_constme" class="col-2-8">
+						m<sub>e</sub>
+						<span class="const_help">Electron Mass</span>
+					</button>
+					<button id="btn_constmp" class="col-2-8">
+						m<sub>p</sub>
+						<span class="const_help">Proton Mass</span>
+					</button>
+					<button id="btn_constmn" class="col-2-8">
+						m<sub>n</sub>
+						<span class="const_help">Neutron Mass</span>
+					</button>
+				</div>
+				<div class="row">
+					<button id="btn_constc" class="col-2-8">
+						c
+						<span class="const_help">Speed of light</span>
+					</button>
+					<button id="btn_consth" class="col-2-8">
+						h
+						<span class="const_help">Plank's constant</span>
+					</button>
+					<button id="btn_constepsilon" class="col-2-8">
+						&epsilon;<sub>0</sub>
+						<span class="const_help">Vacuum Permittivity</span>
+					</button>
+					<button id="btn_constmu" class="col-2-8">
+						&mu;<sub>0</sub>
+						<span class="const_help">Magnetic Permeability</span>
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<script type="text/javascript">
-	function $(expr) {
-		var res = document.querySelectorAll(expr);
-		if(res.length == 1) return res[0];
-		return res;
-	}
-
-	var txt_expr = $("#expression"),
-		lbl_res = $("#result");
-
-	function evaluate_expression() {
-		var expr = txt_expr.value;
-		var res = 0;
-		try {
-			with(Math) {
-				res = eval(expr);
-				lbl_res.innerHTML = res;
-			}
-		}
-		catch(e) {
-			lbl_res.innerHTML = "Syntax Error!";
-		}
-	}
-
-
-	var btns = $("button");
-
-	for(var b in btns) {
-		btns[b].addEventListener("click", function(e) {
-			var str = "";
-
-			switch(this.innerHTML) {
-				case "DEL":
-					txt_expr.value = txt_expr.substr(0, txt_expr.length-1);
-					return;
-
-				case "CONST":
-					// YET TO BE IMPLEMENTED!
-					return;
-
-				case "=":
-					evaluate_expression();
-					return;
-
-				case "sin":
-				case "cos":
-				case "tan":
-				case "asin":
-				case "acos":
-				case "atan":
-				case "log10":
-				case "ln":
-					str = this.innerHTML + "(";
-					break;
-
-				case "\u221Ax":
-					str = "sqrt(";
-					break;
-
-				case "x<sup>2</sup>":
-					str = "^2";
-					break;
-
-				case "e<sup>x</sup>":
-					str = "exp(";
-						break;
-
-				case "\u00F7":
-					str = "/";
-					break;
-
-				case "\u00D7":
-					str = "*";
-					break;
-
-				default:
-					str = this.innerHTML;
-			}
-			
-			txt_expr.value += str;
-			return true;
-		}, false);
-	}
-	</script>
+	<script type="text/javascript" src="./js/calculator.js"></script>
 </body>
 </html>

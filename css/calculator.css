@@ -2,6 +2,9 @@
 	Using a 10% space on both sides of the page and 5% padding on top and bottom
 */
 
+/**************************************************************
+	First some generic styles, along with the grid system
+ **************************************************************/
 * {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -15,7 +18,6 @@
 html, body {
 	margin: 0;
 	padding: 0;
-
 }
 
 body {
@@ -29,20 +31,25 @@ body {
 	height: 100%;
 }
 
+/* Clearfix hack */
 .row:after, .row2:after {
 	content: "";
 	display: table;
 	clear: both;
 }
 
-.col-1-8 	{	width: 12.5%; }
-.col-2-8	{	width: 25%; }
-.col-3-8	{	width: 37.5%; }
-.col-4-8	{	width: 50%; }
-.col-5-8	{	width: 62.5%; }
-.col-6-8	{	width: 75%; }
-.col-7-8	{	width: 87.5%; }
-.col-8-8	{ 	width: 100%; }
+.col-1-3	{ width: 33.33%;}
+.col-2-3	{ width: 66.67%;}
+.col-3-3	{ width: 100%; 	}
+
+.col-1-8 	{ width: 12.5%; }
+.col-2-8	{ width: 25%; 	}
+.col-3-8	{ width: 37.5%; }
+.col-4-8	{ width: 50%; 	}
+.col-5-8	{ width: 62.5%; }
+.col-6-8	{ width: 75%; 	}
+.col-7-8	{ width: 87.5%; }
+.col-8-8	{ width: 100%; 	}
 
 .row, .row2 {
 	display: block;
@@ -56,6 +63,12 @@ body {
 	height: 140px;
 }
 
+.hidden { display: none; }
+
+/**************************************************************
+						 Main Styles Start 
+ **************************************************************/
+
 #calculator {
 	background: #555;
 	box-shadow: 0 0px 2px black;
@@ -63,7 +76,6 @@ body {
 
 button {
 	border-radius: 0;
-	height: 100%;
 	border: 0;
 	background: #666;
 	color: white;
@@ -76,10 +88,13 @@ button {
 
 	font-weight: 100;
 }
-button:hover {
+button:hover, button:active, button:focus {
 	background: #454545;
 }
 
+/************************************************************** 
+		Styles related to expression textbox and result div 
+ **************************************************************/
 #expression, #result {
 	text-align: right;
 	line-height: 70px;
@@ -88,7 +103,6 @@ button:hover {
 	background: white;
 	border: 0;
 }
-
 #expression {
 	z-index: 103;
 	color: #444;
@@ -104,25 +118,81 @@ button:hover {
 	box-shadow: 0 5px 4px -3px black;
 }
 
-#btn_num9, #btn_num6, #btn_num3, #btn_equals {
-	border-right: 1px solid #222;
-	z-index: 101;
-	/* box-shadow: 2px 3px 2px black; */
+/**************************************************************
+							The 4 panes 
+**************************************************************/
+#main_pane, #ops_pane, #scientific_pane, #const_pane {
+	float: left;
+	box-shadow: 2px 0 3px -1px #000;
 }
-[id*="btn_num"], #btn_point, #btn_equals {
+#main_pane { width: 40%; z-index: 101; }
+#ops_pane { width: 10%; z-index: 100; }
+#scientific_pane, #const_pane { width: 50%; z-index: 99; position: absolute; right: 0; }
+/* For the fading effect to work for the first time */
+#const_pane { opacity: 0; }
+
+/* Main pane buttons */
+#main_pane button {
 	background: #444;
 	font-size: 24pt;
 }
-[id*="btn_num"]:hover, #btn_point:hover, #btn_equals:hover {
+#main_pane button:hover, #main_pane button:active {
 	background: #333;
 }
 
-#btn_div, #btn_mul, #btn_sub, #btn_add {
+/**************************************************************
+						Ops pane buttons
+ **************************************************************/
+#ops_pane button {
+	display: block;
+	width: 100%;
+	height: 56px;
+	/* 
+		5 such buttons must be equivalent to 4 normal buttons. One normal button's height = row height = 70px 
+		So, 5x = 70*4 => x = 56
+	*/
 	background: #555;
-	z-index: 100;
-	border-right: 1px solid #222;
 }
 
-#btn_div:hover, #btn_mul:hover, #btn_sub:hover, #btn_add:hover {
+#ops_pane button:hover, #ops_pane button:active {
 	background: #444;
+}
+
+/**************************************************************
+					 Constants Pane buttons
+ **************************************************************/
+#close_const_pane { 
+	position: absolute; 
+	z-index: 1000000; 
+	right: 0;
+	border-radius: 0 0 0 1000px;
+	background: darkgreen;
+	color: white;
+	padding: 10px 10px 15px 15px;
+	font-family: "sans-serif";
+	cursor: pointer;
+	box-shadow: 0 0 2px #000;
+	-webkit-transition: 0.1s all;
+	-moz-transition: 0.1s all;
+	-o-transition: 0.1s all;
+	-ms-transition: 0.1s all;
+	transition: 0.1s all;
+}
+
+#close_const_pane:hover, #close_const_pane:active {
+	background: #333;
+	box-shadow: 0 0 3px #000;
+}
+
+#const_pane .const_help {
+	display: block;
+	font-size: 8pt;
+}
+
+#const_pane button {
+	background: green;
+}
+
+#const_pane button:hover, #const_pane button:active {
+	background: darkgreen;
 }
