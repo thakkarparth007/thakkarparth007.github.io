@@ -18,10 +18,11 @@
 html, body {
 	margin: 0;
 	padding: 0;
+	width: 100%;
+	height: 100%;
 }
 
 body {
-	padding: 5% 10%;
 	background: #eee;
 }
 
@@ -72,6 +73,17 @@ body {
 #calculator {
 	background: #555;
 	box-shadow: 0 0px 2px black;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 80%;
+}
+
+@media (max-width: 800px) {
+	#calculator {
+		width: 100%;
+	}
 }
 
 button {
@@ -116,10 +128,11 @@ button:hover, button:active, button:focus {
 	border-left: 1px solid #444;
 	border-right: 1px solid #444;
 	box-shadow: 0 5px 4px -3px black;
+	cursor: pointer;
 }
 
 /**************************************************************
-							The 4 panes 
+							The panes 
 **************************************************************/
 #main_pane, #ops_pane, #scientific_pane, #const_pane {
 	float: left;
@@ -130,6 +143,8 @@ button:hover, button:active, button:focus {
 #scientific_pane, #const_pane { width: 50%; z-index: 99; position: absolute; right: 0; }
 /* For the fading effect to work for the first time */
 #const_pane { opacity: 0; }
+
+#pane_puller { display: none; }		/* Used only for small screens */
 
 /* Main pane buttons */
 #main_pane button {
@@ -195,4 +210,45 @@ button:hover, button:active, button:focus {
 
 #const_pane button:hover, #const_pane button:active {
 	background: darkgreen;
+}
+
+@media (max-width: 600px) {
+	#main_pane {
+		width: 70%;
+	}
+	#ops_pane {
+		width: 20%;
+	}
+	#scientific_pane, #const_pane {
+		float: left;
+		width: 90%;
+		z-index: 100;
+		box-shadow: 0 -3px 3px 0px #000;
+	}
+	#const_pane {
+		z-index: 101;
+	}
+	#pane_puller {
+		display: block;
+		background: green;
+		width: 10%;
+		height: 280px;
+		float: left;
+		cursor: pointer;
+	}
+}
+
+@media (max-height: 490px) {
+	.row {
+		height: 60px;
+	}
+	.row2 {
+		height: 120px;
+	}
+	#ops_pane button {
+		height: 48px;
+	}
+	#pane_puller {
+		height: 240px;
+	}
 }

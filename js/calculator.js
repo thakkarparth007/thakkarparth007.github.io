@@ -11,12 +11,31 @@ function evaluate_expression() {
 	var expr = txt_expr.value;
 	var res = 0;
 
+	/* Define the constants */
+	var g 	= 	9.80665,
+		G 	=	6.67428E-11,
+		R 	=	6.02214179E+23,
+		K 	=	1.3806504E-23,
+		ME 	=	5.9736E+24,
+		RE 	=	6378140,
+		e 	=	2.817940289E-15,
+		me 	=	9.10938215E-31,
+		mp	=	1.672621637E-27,
+		mn 	=	1.6750E-27,
+		c 	=	299792458,
+		h 	=	6.62606896E-34,
+		mu 	=	6.62606896E-34,
+		eps =	8.854187817E-12;
+
 	function fact(x) {
 		if(x != Math.round(x)) throw new Error("Bad parameter");
 		if(x < 2) return 1;
 		return x * fact(x-1);
 	}
 	try {
+		expr = expr.replace("\u03A0", "PI");
+		expr = expr.replace("\u03B5₀", "eps");
+		expr = expr.replace("\u03BC₀", "mu");
 		expr = expr.replace(/([^\d]*)(\d+)\^(\d+)/g, "$1pow($2,$3)");
 		expr = expr.replace(/([^\d]*)(\d+)!/g, "$1fact($2)");
 		with(Math) {
@@ -123,8 +142,39 @@ function hideConstantsPane() {
 	fadeIn( $("#scientific_pane") );
 }
 
-$("#close_const_pane").addEventListener("click", hideConstantsPane, false);
+(function() {
+	var sci_or_const_pane = null;
+		if( getStyle( $("#const_pane"), "display" ) == "none" )
+			sci_or_const_pane = $("#scientific_pane");
+		else
+			sci_or_const_pane = $("#const_pane");
 
+	$("#close_const_pane").addEventListener("click", function() {
+		hideConstantsPane();
+		sci_or_const_pane = $("#scientific_pane");
+	}, false);
+
+	$("#btn_const").addEventListener("click", function() {
+		showConstantsPane();
+		sci_or_const_pane = $("#const_pane");
+	}, false);
+
+	$("#pane_puller").addEventListener("click", function() {
+		if(getStyle( $("#main_pane"), "display" ) == "none") {
+			sci_or_const_pane.classList.add("hidden");
+			$("#main_pane").classList.remove("hidden");
+			$("#ops_pane").classList.remove("hidden");
+		}
+		else {
+			$("#main_pane").classList.add("hidden");
+			$("#ops_pane").classList.add("hidden");
+			sci_or_const_pane.classList.remove("hidden");
+		}
+	}, false);
+
+})();
+
+$("#result").addEventListener("click", function() { txt_expr.value = this.innerHTML; }, false);
 document.body.addEventListener("keyup", function(e) {
 	// handle the enter key separately
 	if(e.keyCode == 13) {
@@ -179,7 +229,7 @@ for(var b in btns) {
 				return;
 
 			case "btn_const":
-				showConstantsPane();
+				/* handled separately. Don't do anything. */
 				return;
 
 			case "btn_equals":
