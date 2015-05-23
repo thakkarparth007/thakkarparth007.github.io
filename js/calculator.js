@@ -162,6 +162,7 @@ function hideConstantsPane() {
 	$("#pane_puller").addEventListener("click", function() {
 		if(getStyle( $("#main_pane"), "display" ) == "none") {
 			sci_or_const_pane.classList.add("hidden");
+			sci_or_const_pane.classList.add("small-hidden");
 			$("#main_pane").classList.remove("hidden");
 			$("#ops_pane").classList.remove("hidden");
 		}
@@ -169,6 +170,7 @@ function hideConstantsPane() {
 			$("#main_pane").classList.add("hidden");
 			$("#ops_pane").classList.add("hidden");
 			sci_or_const_pane.classList.remove("hidden");
+			sci_or_const_pane.classList.remove("small-hidden");
 		}
 	}, false);
 

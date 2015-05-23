@@ -225,6 +225,9 @@ button:hover, button:active, button:focus {
 		z-index: 100;
 		box-shadow: 0 -3px 3px 0px #000;
 	}
+	.small-hidden {
+		display: none;
+	}
 	#const_pane {
 		z-index: 101;
 	}
