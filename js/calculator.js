@@ -159,16 +159,24 @@ function hideConstantsPane() {
 		sci_or_const_pane = $("#const_pane");
 	}, false);
 
+	/*
+		The code below, is weird. Written like this only
+		to make the behaviour of the panes "normal", 
+		even for people who want to keep playing with
+		the viewport size. :P
+	*/
 	$("#pane_puller").addEventListener("click", function() {
 		if(getStyle( $("#main_pane"), "display" ) == "none") {
-			sci_or_const_pane.classList.add("hidden");
+			//sci_or_const_pane.classList.add("hidden");
 			sci_or_const_pane.classList.add("small-hidden");
 			$("#main_pane").classList.remove("hidden");
+			$("#main_pane").classList.remove("small-hidden");
 			$("#ops_pane").classList.remove("hidden");
+			$("#ops_pane").classList.remove("small-hidden");
 		}
 		else {
-			$("#main_pane").classList.add("hidden");
-			$("#ops_pane").classList.add("hidden");
+			$("#main_pane").classList.add("small-hidden");
+			$("#ops_pane").classList.add("small-hidden");
 			sci_or_const_pane.classList.remove("hidden");
 			sci_or_const_pane.classList.remove("small-hidden");
 		}
