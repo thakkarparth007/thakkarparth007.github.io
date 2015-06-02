@@ -1,0 +1,331 @@
+<html>
+	<head>
+		<title>Galaxzy Destruction</title>
+		<style>
+			html, body {
+				padding: 0;
+				margin: 0;
+			}
+			#cvs {
+				height: 100%;
+				width: 100%;
+			}
+			.score {
+				position: absolute;
+				top: 10px;
+				background: rgba(255,255,255,0.7);
+				box-shadow: 0 0 5px 1px #000;
+				border-radius: 5px;
+				padding: 5px;
+				width: 200px;
+			}
+			.player-name {
+				font: bold 12pt "Candara";
+			}
+			.score-progress-bar {
+				display: block;
+				height: 6px;
+				border-radius: 5px;
+				margin: 2px 0;
+				width: 100%;
+				-webkit-transition: width 0.2s;
+			}
+			.score-color-danger {
+				background: rgba(255,0,0,0.7);
+			}
+			.score-color-avg {
+				background: rgba(255,255,0,0.7);
+			}
+			.score-color-good {
+				background: rgba(0,255,95,0.7);
+			}
+			#ship-1 {
+				left: 10px;
+			}
+			#ship-2 {
+				right: 10px;
+			}
+			#result {
+				position: absolute;
+				top: 295px;
+				left: 392px;
+				padding: 20px;
+				border-radius: 10px;
+				background: white;
+				width: 200px;
+				text-align: center;
+				font: bold 24pt "Candara";
+				color: red;
+				visibility: hidden;
+			}
+			.gravity {
+				position: absolute;
+				top: 5px;
+				left: 300px;
+				background: rgba(255,255,255,0.8);
+				font: bold 15pt 'Candara';
+			}
+		</style>
+	</head>
+	<body>
+		<div style="position: relative" id="cvs_wrapper">
+			<canvas tabstop="1" id="cvs" width="1024" height="707" style="background: url(universe2.jpg) #000"></canvas>
+			<div class="score" id="ship-1">
+				<span class="player-name">Player 1</span>
+				<span class="score-progress-bar score-color-good"></span>
+			</div>
+			<div class="score" id="ship-2">
+				<span class="player-name">Player 2</span>
+				<span class="score-progress-bar score-color-good"></span>
+			</div>
+			<div class='gravity'></div>
+			<div id="result">
+				Player 1 Lost!
+			</div>
+		</div>
+		<script src="jquery-min.js"></script>
+		<script src="simple_inheritance.js"></script>
+		<script src="utils.js"></script>
+		<script src="GameAddict.js"></script>
+		<script src="SpaceShip.js"></script>
+		<script src="bullets.js"></script>
+		<script>
+			
+	  var VR_QUANTUM = 3;   // velocity (rotational) quantum
+	  var THRUST_QUANTUM = 0.05;
+	  
+	  var cvs = document.getElementById("cvs");
+			//var GD = new GameAddict.Game(cvs);	// Galaxy Destruction!
+			//GD
+			
+			
+			var ctx = cvs.getContext('2d');
+			var input = new GameAddict.input(cvs.parentElement);
+			
+			var friction = 1;
+
+			var rand = 5 + (Math.random() * 5)
+			setTimeout(function() {
+				a.friction = b.friction = 1;
+				$('.gravity').html('ZERO FRICTION Started!!!');
+				setTimeout(function() {
+					a.friction = b.friction = 0.995;
+					$('.gravity').html('');
+				}, 10000);
+			}, rand * 1000);
+			
+			var mouse = input.mouse;
+			
+			var LEFT = 0,
+				RIGHT= cvs.width,
+				TOP = 0,
+				BOTTOM = cvs.height;
+			
+			var bullets = [],
+				lasers = [];
+			
+			
+			var redirectIfRequired = function(s) {
+				if((s.x + s.width / 2) > RIGHT) {
+					s.x = LEFT + s.width / 2;
+				}
+				else if((s.x - s.width / 2) < LEFT) {
+					s.x = RIGHT - s.width / 2;
+				}
+				if((s.y + s.height / 2) > BOTTOM) {
+					s.y = TOP + s.height / 2;
+				}
+				else if((s.y - s.height / 2) < TOP) {
+					s.y = BOTTOM - s.height / 2;
+				}
+			}
+			
+			var colloids = function(s1, s2) {
+				var dx = s1.x - s2.x,
+					dy = s1.y - s2.y,
+					dist = Math.sqrt(dx * dx + dy * dy);
+				return dist <= (s1. radius + s2.radius);
+			}
+			
+			var ShipCollidesBullet = function(s, b) {
+				var dx = s.x - b.x;
+				var dy = s.y - b.y;
+				var dist = Math.sqrt(dx * dx + dy * dy);
+				return dist <= s.radius;
+			};
+			
+			var ShipCollidesLaser = function(s, l) {
+				var dx1 = s.x - l.x;
+				var dx2 = s.x - l.x + l.width;
+				var dy = s.y - l.y;
+				var dist1 = Math.sqrt(dx1 * dx1 + dy * dy);
+				var dist2 = Math.sqrt(dx2 * dx2 + dy * dy);
+				
+				return dist1 <= s.radius || dist2 <= s.radius;
+			}
+			
+			var a = new Ship('red', friction);
+			var b = new Ship('blue', friction);
+			
+			a.rotation = -Math.PI;
+			
+			a.x = cvs.width / 3;
+			a.y = cvs.height / 2;
+			
+			b.x = cvs.width - cvs.width / 3;
+			b.y = cvs.height / 2;
+			
+			b.rotation = 0;
+			
+			// required to do separately since we don't allow continuous shoot of lasers.
+			document.addEventListener('keyup', function(e) {
+				if(window.Destroyed) return;
+		//console.log(e.keyCode);     
+				switch(e.keyCode) {
+					case 13:	// enter -> a's bullet
+						bullets.push(new Bullet(a));
+						break;
+		  //case 17:	// ctrl -> a's laser
+		  //case 35:	// end -> a's laser
+		  case 96:	// 0 -> a's laser
+						lasers.push(new Laser(a));
+						break;
+		  
+					//case 96:	// 0 -> player b's laser
+		  case 81:    // q -> player b's laser
+						bullets.push(new Bullet(b));
+						break;
+					case 32:		// space -> player B's laser
+						lasers.push(new Laser(b));
+						break;
+				}
+			},false);
+			
+			function hitOrDestroy(ship, weapon) {
+				ship.life -= weapon == "bullet" ? 2 : (weapon == "laser" ? 4 : /* ship */ 10);
+				ship.hit();
+				if(ship.life <= 0) {
+					window.Destroyed = true;
+					ship.destroy(function() { gameover(ship === a ? 1 : 2)});
+				}
+				if(ship.life >= 0) {	// update the score.
+					var score_div = document.getElementById("ship-" + (ship == a ? 1 : 2));
+					var bar = score_div.getElementsByClassName('score-progress-bar')[0];
+					if(ship.life > 75)
+						bar.className = "score-progress-bar score-color-good";
+					else if(ship.life > 40)
+						bar.className = "score-progress-bar score-color-avg";
+					else
+						bar.className = "score-progress-bar score-color-danger";
+					bar.style.width = ship.life + "%";
+				}
+			}
+			
+			function gameover(p) {
+				if(!window.GO) {
+					window.GO = true;
+					var res = document.getElementById("result");
+					res.style.visibility = "visible";
+					res.innerHTML = "<u>GAME OVER</u><br>Player #" + p + " lost! Loser!";
+				}
+			}
+			
+			function update() {
+				/* Input
+					Allow input only if no ship is destroyed.
+				 */
+				if(!window.Destroyed) {
+					/*if(input.keyboard.enter) {
+						bullets.push(new Bullet(b));
+						//bullets.push(new Bullet(b, b.x + 25));
+					}
+					if(input.keyboard.ctrl) {
+						bullets.push(new Bullet(a));
+						//bullets.push(new Bullet(a, a.x + 25));
+					}
+					*/
+					
+					a.vr = input.keyboard.left ? -VR_QUANTUM : (input.keyboard.right ? VR_QUANTUM : 0);
+					a.thrust = input.keyboard.up ? THRUST_QUANTUM : 0;
+					
+					/******************Mouse controls*****************/
+					//var dx = mouse.x - b.x,
+					//	dy = mouse.y - b.y;
+					//b.rotation = Math.atan2(dy, dx);
+					
+					//b.thrust = mouse.isPressed ? 0.15 : 0;
+					b.thrust = input.keyboard.w ? THRUST_QUANTUM : 0;
+					b.vr = input.keyboard.a ? -VR_QUANTUM : (input.keyboard.d ? VR_QUANTUM : 0);
+				}
+				
+				/******************Collision Detection***********/
+				
+				redirectIfRequired(a);
+				redirectIfRequired(b);
+				
+				for(var i = bullets.length; --i > 0; ) {
+					bullets[i].move(ctx);
+					if(bullets[i].x > RIGHT || bullets[i].x < LEFT || bullets[i].y > BOTTOM || bullets[i].y < TOP)
+					{
+						bullets.splice(i, 1);
+						continue;
+					}
+					if(bullets[i].ship === a) {
+						if(ShipCollidesBullet(b, bullets[i])) {
+							hitOrDestroy(b, "bullet");
+							bullets.splice(i, 1);
+							continue;
+						}
+					}
+					else {
+						if(ShipCollidesBullet(a, bullets[i])) {
+							hitOrDestroy(a, "bullet");
+							bullets.splice(i, 1);
+							continue;
+						}
+					}
+				}
+				
+				for(var i = lasers.length; --i > 0; ) {
+					lasers[i].move(ctx);
+					if(lasers[i].x > RIGHT || lasers[i].x < LEFT || lasers[i].y > BOTTOM || lasers[i].y < TOP)
+					{
+						lasers.splice(i, 1);
+						continue;
+					}
+					if(lasers[i].ship === a) {
+						if(ShipCollidesLaser(b, lasers[i])) {
+							hitOrDestroy(b, "laser");
+							lasers.splice(i, 1);
+							continue;
+						}
+					}
+					else {
+						if(ShipCollidesLaser(a, lasers[i])) {
+							hitOrDestroy(a, "laser");
+							lasers.splice(i, 1);
+							continue;
+						}
+					}
+				}
+				
+				a.update();
+				b.update();
+			}
+			
+			cvs.style.backgroundPosition = '0px 0px';
+			(function draw() {
+				window.requestAnimationFrame(draw);
+				ctx.clearRect(0,0, cvs.width, cvs.height);
+				
+				var bg_pos = parseInt(cvs.style.backgroundPosition) + 2 +(a.vx + b.vx)/5;
+				cvs.style.backgroundPosition = bg_pos + "px 0px";
+				
+				update();
+
+				a.draw(ctx);
+				b.draw(ctx);
+			})();
+		</script>
+	</body>
+</html>

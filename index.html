@@ -167,10 +167,30 @@
 		padding-left: 30px;
 		padding-right: 30px;
 	}
+	.text a {
+		text-decoration: none;
+		color: orange;
+	}
+	.text a:hover {
+		text-decoration: underline;
+	}
 	blockquote {
 		border-left: 2px solid #01579B;
 		padding: 1px 10px 25px 20px;
 		color: #4caf50;
+	}
+
+	#projects .proj_desc {
+		margin-left: 30px;
+		margin-bottom: 30px;
+		border-bottom: 1px solid #01579B;
+	}
+	a.proj_link {
+		text-decoration: none;
+		color: darkgreen;
+	}
+	a.proj_link:hover {
+		text-decoration: underline;
 	}
 
 	@media(max-height: 550px) {
@@ -242,7 +262,7 @@
 			z-index: 5;
 			text-align: right;
 			color: white;
-			font-size: 16pt;
+			font-size: 14pt;
 			font-weight: bold;
 			line-height: 70px;
 		}
@@ -342,24 +362,76 @@
 			<div id="what_do_i_do" class="text">
 				<h1>What do I do?</h1>
 				<p>
+					I am a student at <a href="http://nitt.edu">NIT Trichy</a>, pursuing 
+					CSE. Most of my time is spent reading, chatting, coding or thinking 
+					of the brand new PJ.
+				</p> 
+
+				<p>
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					consequat.
 				</p>
 			</div>
 
 			<div id="projects" class="text">
 				<h1>Projects</h1>
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					I've mostly done small projects. Here are the links to some of those:
+					<ul>
+						<li>
+							<a href="" class="proj_link">Console based calculator (C++)</a>
+							<div class="proj_desc">
+								<p>I had created this while reading "Programming: Principles and Practice Using C++". 
+								It is slightly more advanced than the code given in the book. Of course, there are
+								bugs too.</p>
+
+								<p><em>Warning:</em> I had written it around 2-3 years back. I haven't gone through the code 
+								since then.</p>
+							</div>
+						</li>
+						<li>
+							<a href="./calculator.html" class="proj_link">Another calculator (web-based)</a>
+							<div class="proj_desc">
+								<p>
+								I had created this as a part of an induction task for the 
+								<a href="spider.nitt.edu">Spider club</a>.</p>
+							</div>
+						</li>
+						<li>
+							<a href="http://parth.uc01.clc.af.cm" class="proj_link">Scribblepad</a>
+							<div class="proj_desc">
+								<p>
+								I had created this while I was in the 11<sup>th</sup> standard. I often found 
+								the need to discuss mathematics and physics problems with my friend. Doing that
+								over telephone wasn't very convenient. Plus, I did not have access to 
+								high speed internet that I could video chat. So, I created this. A "pad" where 
+								multiple people can scribble and chat. It is <em>not</em> very advanced. In 
+								fact the code might even be overly complicated. I'm not maintaining the code 
+								anymore.</p>
+
+								<p>
+									My friend and I used this a <b><em>lot!</em></b>
+								</p>
+							</div>
+						</li>
+						<li>
+							<a href="./galaxy_destruction/" class="proj_link">Galaxy Destruction</a>
+							<div class="proj_desc">
+								<p>
+								Just a simple 2 player game (both players on the same keyboard). 
+								The goal is to destroy the other space ship before it destroys you.
+								</p>
+
+								<p>
+									<b><u>Controls:</u></b><br>
+									WASD (navigation), Space (laser), Q (bullets)<br>
+									Arrow keys (navigation), Numpad0 (laser), Enter (bullets)
+								</p>
+							</div>
+						</li>
+					</ul>
 				</p>
 			</div>
 

@@ -3,11 +3,14 @@
 ### Caculator:
 [X] Add the constant values in the evaluation environment.
 [X] Add support for smaller screens.
-[ ]	Replace the buggy evaluation with the postfix notation
-[ ] User-select issues in chrome to be rectified.
+[X]	Replace the buggy evaluation with the postfix notation
+[X] User-select issues in chrome to be rectified.
+[ ] Unfocusing the last clicked button doesn't happen
+[ ] The display for the result is too small at times, for the result to fit. `sin(PI)` for example.
+[ ] Styling isn't done properly for various sizes.
 
 ---
 
 ### Portfolio:
-[ ] Download/make the required graphics for the portfolio
-[ ] Start coding. :P
+[ ] write proper stuff
+[ ] Styling isn't done properly for various sizes.

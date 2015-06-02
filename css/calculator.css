@@ -104,6 +104,14 @@ button:hover, button:active, button:focus {
 	background: #454545;
 }
 
+button, input {
+	-webkit-outline: none;
+	-moz-outline: none;
+	-o-outline: none;
+	-ms-outline: none;
+	outline: none;
+}
+
 /************************************************************** 
 		Styles related to expression textbox and result div 
  **************************************************************/
