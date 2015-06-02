@@ -117,7 +117,6 @@ function evaluate_expression(expr) {
 				
 				case 'function':
 					var fn_name = tk.value;
-					operator_stack.push(tk);
 					tk = tokenizer.nextToken();
 					if(tk.value != '(') {
 						throw "Syntax Error!";
