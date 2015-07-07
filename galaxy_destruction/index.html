@@ -1,331 +1,542 @@
 <html>
-	<head>
-		<title>Galaxzy Destruction</title>
-		<style>
-			html, body {
-				padding: 0;
-				margin: 0;
-			}
-			#cvs {
-				height: 100%;
-				width: 100%;
-			}
-			.score {
-				position: absolute;
-				top: 10px;
-				background: rgba(255,255,255,0.7);
-				box-shadow: 0 0 5px 1px #000;
-				border-radius: 5px;
-				padding: 5px;
-				width: 200px;
-			}
-			.player-name {
-				font: bold 12pt "Candara";
-			}
-			.score-progress-bar {
-				display: block;
-				height: 6px;
-				border-radius: 5px;
-				margin: 2px 0;
-				width: 100%;
-				-webkit-transition: width 0.2s;
-			}
-			.score-color-danger {
-				background: rgba(255,0,0,0.7);
-			}
-			.score-color-avg {
-				background: rgba(255,255,0,0.7);
-			}
-			.score-color-good {
-				background: rgba(0,255,95,0.7);
-			}
-			#ship-1 {
-				left: 10px;
-			}
-			#ship-2 {
-				right: 10px;
-			}
-			#result {
-				position: absolute;
-				top: 295px;
-				left: 392px;
-				padding: 20px;
-				border-radius: 10px;
-				background: white;
-				width: 200px;
-				text-align: center;
-				font: bold 24pt "Candara";
-				color: red;
-				visibility: hidden;
-			}
-			.gravity {
-				position: absolute;
-				top: 5px;
-				left: 300px;
-				background: rgba(255,255,255,0.8);
-				font: bold 15pt 'Candara';
-			}
-		</style>
-	</head>
-	<body>
-		<div style="position: relative" id="cvs_wrapper">
-			<canvas tabstop="1" id="cvs" width="1024" height="707" style="background: url(universe2.jpg) #000"></canvas>
-			<div class="score" id="ship-1">
-				<span class="player-name">Player 1</span>
-				<span class="score-progress-bar score-color-good"></span>
+<head>
+	<title>Galaxzy Destruction</title>
+	<style>
+		html, body {
+			padding: 0;
+			margin: 0;
+		}
+		#cvs {
+			height: 100%;
+			width: 100%;
+		}
+		.score {
+			position: absolute;
+			top: 10px;
+			background: rgba(255,255,255,0.7);
+			box-shadow: 0 0 5px 1px #000;
+			border-radius: 5px;
+			padding: 5px;
+			width: 200px;
+		}
+		.player-name {
+			font: bold 12pt "Candara";
+		}
+		.score-progress-bar {
+			display: block;
+			height: 6px;
+			border-radius: 5px;
+			margin: 2px 0;
+			width: 100%;
+			-webkit-transition: width 0.2s;
+		}
+		.score-color-danger {
+			background: rgba(255,0,0,0.7);
+		}
+		.score-color-avg {
+			background: rgba(255,255,0,0.7);
+		}
+		.score-color-good {
+			background: rgba(0,255,95,0.7);
+		}
+		#ship-1 {
+			left: 10px;
+		}
+		#ship-2 {
+			right: 10px;
+		}
+		#result, #menu {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			padding: 20px;
+			border-radius: 10px;
+			background: white;
+			width: 300px;
+			text-align: center;
+			font: bold 24pt "Candara";
+			color: red;
+			display: none;
+		}
+		#menu {
+			font-size: 20pt;
+			color: #444;
+			width: 400px;
+		}
+		#controls {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			padding: 20px;
+			border-radius: 10px;
+			background: white;
+			display: none;
+		}
+		.player-controls:first-child {
+			float: left;
+			padding: 0 20px 0 0;
+		}
+		.player-controls:last-child {
+			float: left;
+			padding: 0 0 0 20px;
+		}
+		#controls .player-name {
+			background: lightblue;
+			padding: 5px;
+			border-bottom: 1px solid black;
+			margin-bottom: 10px;
+		}
+		.control {
+			background: #ccc;
+			font-weight: bold;
+			box-shadow: 0 0 2px #000;
+			border: 1px solid black;
+			border-radius: 5px;
+			height: 22px;
+			min-width: 25px;
+			padding: 3px;
+			display: block;
+			text-align: center;
+			vertical-align: middle;
+			float: right;
+		}
+		.control-container {
+			margin: 3px 0;
+			padding: 5px;
+		}
+		.control-container:hover {
+			background: lightblue;
+		}
+		.control-container.editing {
+			background: darkblue;
+		}
+		.control-container.editing .control {
+			background: #fff;
+		}
+		#controls:after, .control-container:after {
+			clear: both;
+			display: table;
+			content: " ";
+			padding: 5px;
+		}
+		.gravity {
+			position: absolute;
+			bottom: 5px;
+			left: 0;
+			right: 0;
+			text-align: center;
+			background: rgba(255,255,255,0.8);
+			font: bold 16pt 'Candara';
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div style="position: relative" id="cvs_wrapper">
+		<canvas tabstop="1" id="cvs" width="1024" height="707" style="background: url(universe2.jpg) #000"></canvas>
+		<div class="score" id="ship-1">
+			<span class="player-name">Player 1</span>
+			<span class="score-progress-bar score-color-good"></span>
+		</div>
+		<div class="score" id="ship-2">
+			<span class="player-name">Player 2</span>
+			<span class="score-progress-bar score-color-good"></span>
+		</div>
+		<div class='gravity'>Zero Friction Started!</div>
+		<div id="result">
+			Game Over!
+			<hr>
+			Player <span id="lost-player-number"></span> Lost!
+			<br>
+			<br>
+			<img src="loser.jpeg">
+		</div>
+
+		<div id="menu">
+			<div>Game Paused</div>
+			<hr>
+			<div>To continue the game, press `Esc` key again.</div><br>
+			<div>To set controls, <a id="a-controls" href="#">Click here</a></div>
+		</div>
+
+		<div id="controls">
+			<div class="player-controls">
+				<div class="player-name">Directions - Player 1</div>
+				<div class="control-container" id="p1up">
+					Up <span class="control">W</span>
+				</div>
+				<div class="control-container" id="p1left">
+					Left <span class="control">A</span>
+				</div>
+				<div class="control-container" id="p1right">
+					Right <span class="control">D</span>
+				</div>
+				<div class="control-container" id="p1bullet">
+					Bullet <span class="control">Q</span>
+				</div>
+				<div class="control-container" id="p1laser">
+					Laser <span class="control">Space</span>
+				</div>
 			</div>
-			<div class="score" id="ship-2">
-				<span class="player-name">Player 2</span>
-				<span class="score-progress-bar score-color-good"></span>
-			</div>
-			<div class='gravity'></div>
-			<div id="result">
-				Player 1 Lost!
+
+			<!-- Player 2 -->
+			<div class="player-controls">
+				<div class="player-name">Directions - Player 2</div>
+				<div class="control-container" id="p2up">
+					Up <span class="control">&#x2191;</span>
+				</div>
+				<div class="control-container" id="p2left">
+					Left <span class="control">&#x2190;</span>
+				</div>
+				<div class="control-container" id="p2right">
+					Right <span class="control">&#x2192;</span>
+				</div>
+				<div class="control-container" id="p2bullet">
+					Bullet <span class="control">NumPad 0</span>
+				</div>
+				<div class="control-container" id="p2laser">
+					Laser <span class="control">Enter</span>
+				</div>
 			</div>
 		</div>
-		<script src="jquery-min.js"></script>
-		<script src="simple_inheritance.js"></script>
-		<script src="utils.js"></script>
-		<script src="GameAddict.js"></script>
-		<script src="SpaceShip.js"></script>
-		<script src="bullets.js"></script>
-		<script>
-			
-	  var VR_QUANTUM = 3;   // velocity (rotational) quantum
-	  var THRUST_QUANTUM = 0.05;
-	  
-	  var cvs = document.getElementById("cvs");
-			//var GD = new GameAddict.Game(cvs);	// Galaxy Destruction!
-			//GD
-			
-			
-			var ctx = cvs.getContext('2d');
-			var input = new GameAddict.input(cvs.parentElement);
-			
-			var friction = 1;
+	</div>
+	<script src="jquery-min.js"></script>
+	<script src="simple_inheritance.js"></script>
+	<script src="SpaceShip.js"></script>
+	<script src="bullets.js"></script>
+	<script>
 
-			var rand = 5 + (Math.random() * 5)
-			setTimeout(function() {
-				a.friction = b.friction = 1;
-				$('.gravity').html('ZERO FRICTION Started!!!');
-				setTimeout(function() {
-					a.friction = b.friction = 0.995;
-					$('.gravity').html('');
-				}, 10000);
-			}, rand * 1000);
-			
-			var mouse = input.mouse;
-			
-			var LEFT = 0,
-				RIGHT= cvs.width,
-				TOP = 0,
-				BOTTOM = cvs.height;
-			
-			var bullets = [],
-				lasers = [];
-			
-			
-			var redirectIfRequired = function(s) {
-				if((s.x + s.width / 2) > RIGHT) {
-					s.x = LEFT + s.width / 2;
-				}
-				else if((s.x - s.width / 2) < LEFT) {
-					s.x = RIGHT - s.width / 2;
-				}
-				if((s.y + s.height / 2) > BOTTOM) {
-					s.y = TOP + s.height / 2;
-				}
-				else if((s.y - s.height / 2) < TOP) {
-					s.y = BOTTOM - s.height / 2;
-				}
+	// not just prettifies keyCode, also contains a list of valid keys.
+	var prettifyKeyCode = {
+		9: "Tab", 13: "Enter", 17: "Ctrl", 18: "Alt",
+		32: "Space", 33: "Page up", 34: "Page down", 35: "End", 36: "Home",
+		
+		65 : "A", 66 : "B", 67 : "C", 68 : "D", 69 : "E", 70 : "F", 71 : "G", 
+		72 : "H", 73 : "I", 74 : "J", 75 : "K", 76 : "L", 77 : "M", 78 : "N", 
+		79 : "O", 80 : "P", 81 : "Q", 82 : "R", 83 : "S", 84 : "T", 85 : "U", 
+		86 : "V", 87 : "W", 88 : "X", 89 : "Y", 90 : "Z",
+		
+		37: "\u2190", 38: "\u2191", 39: "\u2192", 40: "\u2193", 
+		45: "Insert", 46: "Del",
+		
+		48: "0", 49: "1", 50: "2", 51: "3", 52: "4", 53: "5", 54: "6", 55: "7", 
+		56: "8", 57: "9",
+		
+		96: "Numpad 0", 97: "Numpad 1", 98: "Numpad 2", 99: "Numpad 3", 
+		100: "Numpad 4", 101: "Numpad 5", 102: "Numpad 6", 
+		103: "Numpad 7", 104: "Numpad 8", 105: "Numpad 9", 
+
+		106: "*", 107: "+", 109: "-", 110: ".", 111 : "/",
+		
+		112: "f1", 113: "f2", 114: "f3", 115: "f4", 116: "f5", 117: "f6", 
+		118: "f7", 119: "f8", 120: "f9", 121: "f10", 122: "f11", 123: "f12",
+
+		188: ",", 190: ".", 191: "/"
+	};
+
+
+	var _paused = false;
+	var controls = {
+		p1up: parseInt(localStorage.p1up) || 87,			// W
+		p1left: parseInt(localStorage.p1left) || 65,		// A
+		p1right: parseInt(localStorage.p1right) || 68,		// D
+		p1laser: parseInt(localStorage.p1laser) || 32,		// Space
+		p1bullet: parseInt(localStorage.p1bullet) || 81,	// Q
+
+		p2up: parseInt(localStorage.p2up) || 38,			// up arrow 
+		p2left: parseInt(localStorage.p2left) || 37,		// left arrow
+		p2right: parseInt(localStorage.p2right) || 39,		// right arrow
+		p2laser: parseInt(localStorage.p2laser) || 96,		// numpad0
+		p2bullet: parseInt(localStorage.p2bullet) || 13,	// enter
+	};
+	var reverse_controls = { };
+	for(var key in controls) {
+		reverse_controls[ controls[key] ] = key;
+		$("#" + key + " .control").html(prettifyKeyCode[controls[key]]);
+	}
+
+	// maintains state of keys that are currently pressed
+	// keyboard[ somekeycode ] == true iff the key with 
+	// keycode = somekeycode is pressed currently
+	var keyboard = {};
+
+	var VR_QUANTUM = 3;   // velocity (rotational) quantum
+	var THRUST_QUANTUM = 0.05;
+
+	var cvs = document.getElementById("cvs");
+	var ctx = cvs.getContext('2d');
+
+	var friction = 1;
+
+	var rand = 5 + (Math.random() * 5);
+	setTimeout(function() {
+		a.friction = b.friction = 1;
+		$('.gravity').show();
+		setTimeout(function() {
+			a.friction = b.friction = 0.995;
+			$('.gravity').hide();
+		}, 10000);
+	}, rand * 1000);
+
+	var LEFT = 0,
+		RIGHT= cvs.width,
+		TOP = 0,
+		BOTTOM = cvs.height;
+
+	var bullets = [],
+		lasers = [];
+
+
+	var redirectIfRequired = function(s) {
+		if((s.x + s.width / 2) > RIGHT) {
+			s.x = LEFT + s.width / 2;
+		}
+		else if((s.x - s.width / 2) < LEFT) {
+			s.x = RIGHT - s.width / 2;
+		}
+		if((s.y + s.height / 2) > BOTTOM) {
+			s.y = TOP + s.height / 2;
+		}
+		else if((s.y - s.height / 2) < TOP) {
+			s.y = BOTTOM - s.height / 2;
+		}
+	};
+
+	var colloids = function(s1, s2) {
+		var dx = s1.x - s2.x,
+		dy = s1.y - s2.y,
+		dist = Math.sqrt(dx * dx + dy * dy);
+		return dist <= (s1. radius + s2.radius);
+	};
+
+	var ShipCollidesBullet = function(s, b) {
+		var dx = s.x - b.x;
+		var dy = s.y - b.y;
+		var dist = Math.sqrt(dx * dx + dy * dy);
+		return dist <= s.radius;
+	};
+
+	var ShipCollidesLaser = function(s, l) {
+		var dx1 = s.x - l.x;
+		var dx2 = s.x - l.x + l.width;
+		var dy = s.y - l.y;
+		var dist1 = Math.sqrt(dx1 * dx1 + dy * dy);
+		var dist2 = Math.sqrt(dx2 * dx2 + dy * dy);
+
+		return dist1 <= s.radius || dist2 <= s.radius;
+	};
+
+	var a = new Ship('red', friction);
+	var b = new Ship('blue', friction);
+
+	a.rotation = -Math.PI;
+
+	a.x = cvs.width / 3;
+	a.y = cvs.height / 2;
+
+	b.x = cvs.width - cvs.width / 3;
+	b.y = cvs.height / 2;
+
+	b.rotation = 0;
+
+	$("#a-controls").click(function(e) {
+		e.preventDefault();
+		$("#controls").show();
+
+		return false;
+	});
+
+	$(document).on("keydown", function(e) {
+		// keyboard.p1up == true if the key corresponding to p1up is pressed
+		if(reverse_controls[e.keyCode])
+			keyboard[ reverse_controls[e.keyCode] ] = true;
+	});
+
+	$(document).on("keyup", function(e) {
+		// keyboard.p1up == true if the key corresponding to p1up is pressed
+		if(reverse_controls[e.keyCode])
+			keyboard[ reverse_controls[e.keyCode] ] = false;
+	});
+
+	$(".control-container").click(function(e) {
+		var id = $(this).attr("id");
+		$(".editing").removeClass("editing");
+		$(this).addClass("editing");
+		$(document).one("keyup", function(ev) {
+			// this can happen if someone selects a control first,
+			// and then disselects it by selecting some other control
+			if( !$("#" + id).hasClass("editing") )
+				return;
+			$("#" + id).removeClass("editing");
+			if(!prettifyKeyCode[ev.keyCode]) return;	// can't allow invalid keys
+			if(reverse_controls[ ev.keyCode ] && reverse_controls[ ev.keyCode ] != id) {
+				alert("This key is already being used." + reverse_controls[ ev.keyCode ]);
+				return;
 			}
+			reverse_controls[ controls[id] ] = null;	// clear the old entry.
+			localStorage[id] = controls[id] = ev.keyCode;
+			reverse_controls[ ev.keyCode ] = id;
+			$("#" + id + " .control").html( prettifyKeyCode[ev.keyCode] );
+		});
+	});
+
+	// required to do separately since we don't allow continuous shoot of lasers.
+	document.addEventListener('keyup', function(e) {
+		if(window.Destroyed) return;
+
+		if(_paused && e.keyCode != 27)
+			return false;				// only escape key is handled here when paused
+
+		switch(e.keyCode) {
+			case 27: 	// esc -> pause and show controls
+				if( $("#controls").css("display") != "none" ) {
+					$("#controls").hide();
+				}
+				else if( $("#menu").css("display") != "none" ) {
+					$("#menu").hide();
+					_paused = false;
+					window.requestAnimationFrame(draw);
+				}
+				else if(!_paused) {
+					_paused = true;
+					$("#menu").show();
+				}
+
+				break;
 			
-			var colloids = function(s1, s2) {
-				var dx = s1.x - s2.x,
-					dy = s1.y - s2.y,
-					dist = Math.sqrt(dx * dx + dy * dy);
-				return dist <= (s1. radius + s2.radius);
-			}
-			
-			var ShipCollidesBullet = function(s, b) {
-				var dx = s.x - b.x;
-				var dy = s.y - b.y;
-				var dist = Math.sqrt(dx * dx + dy * dy);
-				return dist <= s.radius;
-			};
-			
-			var ShipCollidesLaser = function(s, l) {
-				var dx1 = s.x - l.x;
-				var dx2 = s.x - l.x + l.width;
-				var dy = s.y - l.y;
-				var dist1 = Math.sqrt(dx1 * dx1 + dy * dy);
-				var dist2 = Math.sqrt(dx2 * dx2 + dy * dy);
-				
-				return dist1 <= s.radius || dist2 <= s.radius;
-			}
-			
-			var a = new Ship('red', friction);
-			var b = new Ship('blue', friction);
-			
-			a.rotation = -Math.PI;
-			
-			a.x = cvs.width / 3;
-			a.y = cvs.height / 2;
-			
-			b.x = cvs.width - cvs.width / 3;
-			b.y = cvs.height / 2;
-			
-			b.rotation = 0;
-			
-			// required to do separately since we don't allow continuous shoot of lasers.
-			document.addEventListener('keyup', function(e) {
-				if(window.Destroyed) return;
-		//console.log(e.keyCode);     
-				switch(e.keyCode) {
-					case 13:	// enter -> a's bullet
-						bullets.push(new Bullet(a));
-						break;
-		  //case 17:	// ctrl -> a's laser
-		  //case 35:	// end -> a's laser
-		  case 96:	// 0 -> a's laser
-						lasers.push(new Laser(a));
-						break;
+			case controls.p1bullet:
+				bullets.push(new Bullet(a));
+				break;
 		  
-					//case 96:	// 0 -> player b's laser
-		  case 81:    // q -> player b's laser
-						bullets.push(new Bullet(b));
-						break;
-					case 32:		// space -> player B's laser
-						lasers.push(new Laser(b));
-						break;
-				}
-			},false);
-			
-			function hitOrDestroy(ship, weapon) {
-				ship.life -= weapon == "bullet" ? 2 : (weapon == "laser" ? 4 : /* ship */ 10);
-				ship.hit();
-				if(ship.life <= 0) {
-					window.Destroyed = true;
-					ship.destroy(function() { gameover(ship === a ? 1 : 2)});
-				}
-				if(ship.life >= 0) {	// update the score.
-					var score_div = document.getElementById("ship-" + (ship == a ? 1 : 2));
-					var bar = score_div.getElementsByClassName('score-progress-bar')[0];
-					if(ship.life > 75)
-						bar.className = "score-progress-bar score-color-good";
-					else if(ship.life > 40)
-						bar.className = "score-progress-bar score-color-avg";
-					else
-						bar.className = "score-progress-bar score-color-danger";
-					bar.style.width = ship.life + "%";
-				}
-			}
-			
-			function gameover(p) {
-				if(!window.GO) {
-					window.GO = true;
-					var res = document.getElementById("result");
-					res.style.visibility = "visible";
-					res.innerHTML = "<u>GAME OVER</u><br>Player #" + p + " lost! Loser!";
-				}
-			}
-			
-			function update() {
-				/* Input
-					Allow input only if no ship is destroyed.
-				 */
-				if(!window.Destroyed) {
-					/*if(input.keyboard.enter) {
-						bullets.push(new Bullet(b));
-						//bullets.push(new Bullet(b, b.x + 25));
-					}
-					if(input.keyboard.ctrl) {
-						bullets.push(new Bullet(a));
-						//bullets.push(new Bullet(a, a.x + 25));
-					}
-					*/
-					
-					a.vr = input.keyboard.left ? -VR_QUANTUM : (input.keyboard.right ? VR_QUANTUM : 0);
-					a.thrust = input.keyboard.up ? THRUST_QUANTUM : 0;
-					
-					/******************Mouse controls*****************/
-					//var dx = mouse.x - b.x,
-					//	dy = mouse.y - b.y;
-					//b.rotation = Math.atan2(dy, dx);
-					
-					//b.thrust = mouse.isPressed ? 0.15 : 0;
-					b.thrust = input.keyboard.w ? THRUST_QUANTUM : 0;
-					b.vr = input.keyboard.a ? -VR_QUANTUM : (input.keyboard.d ? VR_QUANTUM : 0);
-				}
-				
-				/******************Collision Detection***********/
-				
-				redirectIfRequired(a);
-				redirectIfRequired(b);
-				
-				for(var i = bullets.length; --i > 0; ) {
-					bullets[i].move(ctx);
-					if(bullets[i].x > RIGHT || bullets[i].x < LEFT || bullets[i].y > BOTTOM || bullets[i].y < TOP)
-					{
-						bullets.splice(i, 1);
-						continue;
-					}
-					if(bullets[i].ship === a) {
-						if(ShipCollidesBullet(b, bullets[i])) {
-							hitOrDestroy(b, "bullet");
-							bullets.splice(i, 1);
-							continue;
-						}
-					}
-					else {
-						if(ShipCollidesBullet(a, bullets[i])) {
-							hitOrDestroy(a, "bullet");
-							bullets.splice(i, 1);
-							continue;
-						}
-					}
-				}
-				
-				for(var i = lasers.length; --i > 0; ) {
-					lasers[i].move(ctx);
-					if(lasers[i].x > RIGHT || lasers[i].x < LEFT || lasers[i].y > BOTTOM || lasers[i].y < TOP)
-					{
-						lasers.splice(i, 1);
-						continue;
-					}
-					if(lasers[i].ship === a) {
-						if(ShipCollidesLaser(b, lasers[i])) {
-							hitOrDestroy(b, "laser");
-							lasers.splice(i, 1);
-							continue;
-						}
-					}
-					else {
-						if(ShipCollidesLaser(a, lasers[i])) {
-							hitOrDestroy(a, "laser");
-							lasers.splice(i, 1);
-							continue;
-						}
-					}
-				}
-				
-				a.update();
-				b.update();
-			}
-			
-			cvs.style.backgroundPosition = '0px 0px';
-			(function draw() {
-				window.requestAnimationFrame(draw);
-				ctx.clearRect(0,0, cvs.width, cvs.height);
-				
-				var bg_pos = parseInt(cvs.style.backgroundPosition) + 2 +(a.vx + b.vx)/5;
-				cvs.style.backgroundPosition = bg_pos + "px 0px";
-				
-				update();
+			case controls.p1laser:
+				lasers.push(new Laser(a));
+				break;
+		  
+			case controls.p2bullet:
+				bullets.push(new Bullet(b));
+				break;
 
-				a.draw(ctx);
-				b.draw(ctx);
-			})();
-		</script>
-	</body>
+			case controls.p2laser:
+				lasers.push(new Laser(b));
+				break;
+		}
+	},false);
+			
+	function hitOrDestroy(ship, weapon) {
+		ship.life -= weapon == "bullet" ? 2 : (weapon == "laser" ? 4 : /* ship */ 10);
+		ship.hit();
+		if(ship.life <= 0) {
+			window.Destroyed = true;
+			ship.destroy(function() { gameover(ship === a ? 1 : 2); });
+		}
+		if(ship.life >= 0) {	// update the score.
+			var score_div = document.getElementById("ship-" + (ship == a ? 1 : 2));
+			var bar = score_div.getElementsByClassName('score-progress-bar')[0];
+			if(ship.life > 75)
+				bar.className = "score-progress-bar score-color-good";
+			else if(ship.life > 40)
+				bar.className = "score-progress-bar score-color-avg";
+			else
+				bar.className = "score-progress-bar score-color-danger";
+			bar.style.width = ship.life + "%";
+		}
+	}
+		
+	function gameover(p) {
+		if(!window.GO) {
+			window.GO = true;
+			$("#lost-player-number").html(p);
+			$("#result").show();
+		}
+	}
+		
+	function update() {
+		/* Input
+			Allow input only if no ship is destroyed.
+		*/
+		if(!window.Destroyed) {
+			a.thrust = keyboard.p1up ? THRUST_QUANTUM : 0;
+			a.vr = keyboard.p1left ? -VR_QUANTUM : (keyboard.p1right ? VR_QUANTUM : 0);
+			
+			b.thrust = keyboard.p2up ? THRUST_QUANTUM : 0;
+			b.vr = keyboard.p2left ? -VR_QUANTUM : (keyboard.p2right ? VR_QUANTUM : 0);
+		}
+			
+		/******************Collision Detection***********/
+			
+		redirectIfRequired(a);
+		redirectIfRequired(b);
+			
+		for(var i = bullets.length; --i > 0; ) {
+			bullets[i].move(ctx);
+			if(bullets[i].x > RIGHT || bullets[i].x < LEFT || bullets[i].y > BOTTOM || bullets[i].y < TOP)
+			{
+				bullets.splice(i, 1);
+				continue;
+			}
+			if(bullets[i].ship === a) {
+				if(ShipCollidesBullet(b, bullets[i])) {
+					hitOrDestroy(b, "bullet");
+					bullets.splice(i, 1);
+					continue;
+				}
+			}
+			else {
+				if(ShipCollidesBullet(a, bullets[i])) {
+					hitOrDestroy(a, "bullet");
+					bullets.splice(i, 1);
+					continue;
+				}
+			}
+		}
+		
+		for(var i = lasers.length; --i > 0; ) {
+			lasers[i].move(ctx);
+			if(lasers[i].x > RIGHT || lasers[i].x < LEFT || lasers[i].y > BOTTOM || lasers[i].y < TOP)
+			{
+				lasers.splice(i, 1);
+				continue;
+			}
+			if(lasers[i].ship === a) {
+				if(ShipCollidesLaser(b, lasers[i])) {
+					hitOrDestroy(b, "laser");
+					lasers.splice(i, 1);
+					continue;
+				}
+			}
+			else {
+				if(ShipCollidesLaser(a, lasers[i])) {
+					hitOrDestroy(a, "laser");
+					lasers.splice(i, 1);
+					continue;
+				}
+			}
+		}
+		
+		a.update();
+		b.update();
+	}
+		
+	cvs.style.backgroundPosition = '0px 0px';
+	var startTime = Date.now();
+	function draw() {
+		if(!_paused)
+			window.requestAnimationFrame(draw);
+
+		ctx.clearRect(0,0, cvs.width, cvs.height);
+		
+		var bg_pos = parseFloat(cvs.style.backgroundPosition) + 2 +(a.vx + b.vx)/2;
+		cvs.style.backgroundPosition = bg_pos + "px 0px";
+
+		update();
+
+		a.draw(ctx);
+		b.draw(ctx);
+	}
+
+	draw();
+	</script>
+</body>
 </html>
