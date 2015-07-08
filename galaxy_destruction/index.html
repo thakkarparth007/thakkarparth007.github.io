@@ -271,7 +271,11 @@
 	var friction = 1;
 
 	var rand = 5 + (Math.random() * 5);
+	
 	setTimeout(function() {
+		rand = 5 + (Math.random() * 5);
+		if(!gameover) setTimeout(arguments.callee, (50000 + rand * 10000));
+		
 		a.friction = b.friction = 1;
 		$('.gravity').show();
 		setTimeout(function() {
