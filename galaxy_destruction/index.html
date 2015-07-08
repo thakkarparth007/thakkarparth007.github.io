@@ -274,7 +274,7 @@
 	
 	setTimeout(function() {
 		rand = 5 + (Math.random() * 5);	// repeat zero gravity within 5-10 seconds.
-		if(!gameover) setTimeout(arguments.callee, (rand));
+		if(!gameover) setTimeout(arguments.callee, (10000 + rand));
 		
 		a.friction = b.friction = 1;
 		$('.gravity').show();
