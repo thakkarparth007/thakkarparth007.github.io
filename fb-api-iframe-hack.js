@@ -42,7 +42,7 @@
 		}
 	};*/
 
-	var api = ["__globalCallbacks", "api", "AppEvents", "getLoginStatus", "getAuthResponse", 
+	var api = ["__globalCallbacks", "api", "AppEvents", "getLoginStatus", "getAuthResponse", "init",
 			   "getAccessToken", "getUserID", "login", "logout", "Canvas", "Event", "Frictionless", "ui", "XFBML"];
 	for(var k in api) {
 		(function(key) {
