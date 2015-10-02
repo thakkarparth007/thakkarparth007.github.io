@@ -269,18 +269,20 @@
 	var ctx = cvs.getContext('2d');
 
 	var friction = 1;
+	var rotational_friction = 0.8;
 
 	var rand = 5 + (Math.random() * 5);
-	
+	$gravity = $('.gravity');
+
 	setTimeout(function() {
 		rand = 5 + (Math.random() * 5);	// repeat zero gravity within 5-10 seconds.
 		if(!gameover) setTimeout(arguments.callee, (10000 + rand));
 		
 		a.friction = b.friction = 1;
-		$('.gravity').show();
+		$gravity.show();
 		setTimeout(function() {
 			a.friction = b.friction = 0.995;
-			$('.gravity').hide();
+			$gravity.hide();
 		}, 10000);
 	}, rand * 1000);
 
@@ -308,11 +310,99 @@
 		}
 	};
 
-	var colloids = function(s1, s2) {
-		var dx = s1.x - s2.x,
-		dy = s1.y - s2.y,
+	var handle_collision = function(s0, s1) {
+		var dx = s0.x - s1.x,
+		dy = s0.y - s1.y,
 		dist = Math.sqrt(dx * dx + dy * dy);
-		return dist <= (s1. radius + s2.radius);
+		if(dist >= (s0. radius + s1.radius))
+			return;
+
+		var x0 = 0, y0 = 0;
+		var x1, y1,
+			vx0, vy0,
+			vx1, vy1;
+
+		var p0_sq = s0.vx^2 + s0.vy^2;
+		var p1_sq = s1.vx^2 + s1.vy^2;
+
+		var angle = Math.atan2(dy,dx),
+			cos = Math.cos(angle),
+			sin = Math.sin(angle);
+
+		x1 = dx * cos + dy * sin;
+		y1 = dy * cos - dx * sin;
+
+		vx0 = s0.vx * cos + s0.vy * sin;
+		vy0 = s0.vy * cos - s0.vx * sin;
+
+		vx1 = s1.vx * cos + s1.vy * sin;
+		vy1 = s1.vy * cos - s1.vx * sin;
+
+		var tmp = vx0;
+		vx0 = vx1;
+		vx1 = tmp;
+
+		var fvx0 = vx0 * cos - vy0 * sin;
+		var fvy0 = vy0 * cos + vx0 * sin;
+
+		var fvx1 = vx1 * cos - vy1 * sin;
+		var fvy1 = vy1 * cos + vx1 * sin;
+
+		s0.vx = fvx0;
+		s0.vy = fvy0;
+
+		s1.vx = fvx1;
+		s1.vy = fvy1;
+
+		s0.x += s0.vx;
+		s0.y += s0.vy;
+
+		s1.x += s1.vx;
+		s1.y += s1.vy;
+
+		var vr0 = 0,
+			vr1 = 0;
+
+		if(p0_sq < p1_sq) {
+			vr0 = 100 * (Math.random() > 0.5 ? 1 : -1);
+			vr1 = 50 * (Math.random() > 0.5 ? 1 : -1);
+
+			s0.life -= 10;
+			s1.life -= 5;
+		}
+		else if(p0_sq > p1_sq) {
+			vr0 = 50 * (Math.random() > 0.5 ? 1 : -1);
+			vr1 = 100 * (Math.random() > 0.5 ? 1 : -1);
+
+			s0.life -= 5;
+			s1.life -= 10;
+		}
+		else {
+			vr0 = 5 * (Math.random() > 0.5 ? 1 : -1);
+			vr1 = 5 * (Math.random() > 0.5 ? 1 : -1);
+
+			s0.life -= 5;
+			s1.life -= 5;
+		}
+
+		setTimeout(function() {
+			var todo = false;
+			if(Math.abs(vr0) >= 1) {
+				vr0 -= 1 * (vr0 > 0 ? 1 : -1);
+				todo = true;
+			}
+			if(Math.abs(vr1) >= 1) {
+				vr1 -= 1 * (vr1 > 0 ? 1 : -1);
+				todo = true;
+			}
+			s0.vr += vr0;
+			s1.vr += vr1;
+			if(todo)
+				;//setTimeout(arguments.callee, 20);
+		}, 0);
+
+		hitOrDestroy(s0);
+		hitOrDestroy(s1);
 	};
 
 	var ShipCollidesBullet = function(s, b) {
@@ -332,8 +422,8 @@
 		return dist1 <= s.radius || dist2 <= s.radius;
 	};
 
-	var a = new Ship('red', friction);
-	var b = new Ship('blue', friction);
+	var a = new Ship('red', friction, rotational_friction);
+	var b = new Ship('blue', friction, rotational_friction);
 
 	a.rotation = -Math.PI;
 
@@ -352,18 +442,18 @@
 		return false;
 	});
 
-	$(document).on("keydown", function(e) {
+	document.addEventListener("keydown", function(e) {
 		// keyboard.p1up == true if the key corresponding to p1up is pressed
 		if(reverse_controls[e.keyCode])
 			keyboard[ reverse_controls[e.keyCode] ] = true;
 	});
-
-	$(document).on("keyup", function(e) {
+/*
+	document.addEventListener("keyup", function(e) {
 		// keyboard.p1up == true if the key corresponding to p1up is pressed
 		if(reverse_controls[e.keyCode])
 			keyboard[ reverse_controls[e.keyCode] ] = false;
 	});
-
+*/
 	$(".control-container").click(function(e) {
 		var id = $(this).attr("id");
 		$(".editing").removeClass("editing");
@@ -389,6 +479,9 @@
 	// required to do separately since we don't allow continuous shoot of lasers.
 	document.addEventListener('keyup', function(e) {
 		if(window.Destroyed) return;
+
+		if(reverse_controls[e.keyCode])
+			keyboard[ reverse_controls[e.keyCode] ] = false;
 
 		if(_paused && e.keyCode != 27)
 			return false;				// only escape key is handled here when paused
@@ -427,17 +520,19 @@
 				break;
 		}
 	},false);
-			
+	
+	var bar1 = document.getElementById("ship-1").getElementsByClassName('score-progress-bar')[0];
+	var bar2 = document.getElementById("ship-2").getElementsByClassName('score-progress-bar')[0];
+
 	function hitOrDestroy(ship, weapon) {
-		ship.life -= weapon == "bullet" ? 2 : (weapon == "laser" ? 4 : /* ship */ 10);
+		ship.life -= weapon == "bullet" ? 2 : (weapon == "laser" ? 4 : /* ship - handled in handle_collision */ 0);
 		ship.hit();
 		if(ship.life <= 0) {
 			window.Destroyed = true;
 			ship.destroy(function() { gameover(ship === a ? 1 : 2); });
 		}
 		if(ship.life >= 0) {	// update the score.
-			var score_div = document.getElementById("ship-" + (ship == a ? 1 : 2));
-			var bar = score_div.getElementsByClassName('score-progress-bar')[0];
+			var bar = (ship == a ? bar1 : bar2);
 			if(ship.life > 75)
 				bar.className = "score-progress-bar score-color-good";
 			else if(ship.life > 40)
@@ -460,16 +555,35 @@
 		/* Input
 			Allow input only if no ship is destroyed.
 		*/
-		if(!window.Destroyed) {
+		if(!window.Destroyed && !_paused) {
 			a.thrust = keyboard.p1up ? THRUST_QUANTUM : 0;
-			a.vr = keyboard.p1left ? -VR_QUANTUM : (keyboard.p1right ? VR_QUANTUM : 0);
-			
 			b.thrust = keyboard.p2up ? THRUST_QUANTUM : 0;
-			b.vr = keyboard.p2left ? -VR_QUANTUM : (keyboard.p2right ? VR_QUANTUM : 0);
+
+			if(a.vr < 0 && keyboard.p1right) {
+				a.vr += 5 * VR_QUANTUM;
+			}
+			else if(a.vr > 0 && keyboard.p1left) {
+				a.vr -= 5 * VR_QUANTUM;
+			}
+			else {
+				a.vr += keyboard.p1left ? -VR_QUANTUM : (keyboard.p1right ? VR_QUANTUM : 0);
+			}
+
+			if(b.vr < 0 && keyboard.p2right) {
+				b.vr += 5 * VR_QUANTUM;
+			}
+			else if(b.vr > 0 && keyboard.p2left) {
+				b.vr -= 5 * VR_QUANTUM;
+			}
+			else {
+				b.vr += keyboard.p2left ? -VR_QUANTUM : (keyboard.p2right ? VR_QUANTUM : 0);
+			}
 		}
 			
 		/******************Collision Detection***********/
 			
+		handle_collision(a,b);
+
 		redirectIfRequired(a);
 		redirectIfRequired(b);
 			

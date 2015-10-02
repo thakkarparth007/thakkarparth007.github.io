@@ -33,7 +33,7 @@ var Laser = Bullet.extend({
 	init: function(ship) {
 		this._super(ship);
 		this.width = 30;
-		this.height = 3
+		this.height = 3;
 		this.speed = 90;
 	}
 });

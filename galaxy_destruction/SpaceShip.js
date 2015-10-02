@@ -32,7 +32,7 @@ Sprite.prototype.draw = function(ctx) {
 				 -this.spriteWidth / 2, -this.spriteHeight / 2, this.spriteWidth, this.spriteHeight);
 };
 
-var Ship = function(color, friction) {
+var Ship = function(color, friction, rotational_friction) {
 	this.x = 0;
 	this.y = 0;
 	this.rotation = 0;
@@ -41,6 +41,7 @@ var Ship = function(color, friction) {
 	this.vy = 0;
 	this.vr = 0;	// rotational velocity - degrees
 	this.friction = friction;
+	this.rotational_friction = rotational_friction;
 	this.width = 100;
 	this.height = 100;
 	
@@ -56,6 +57,7 @@ var Ship = function(color, friction) {
 
 Ship.prototype.update = function() {
 	this.rotation += this.vr * Math.PI / 180;
+	this.vr *= this.rotational_friction;
 	
 	var ax = Math.cos(this.rotation) * this.thrust,
 		ay = Math.sin(this.rotation) * this.thrust;
@@ -91,6 +93,12 @@ Ship.prototype.draw = function(ctx) {
 	ctx.translate(this.x, this.y);
 	ctx.rotate(this.rotation);
 	this.sprite.draw(ctx);
+
+	ctx.beginPath();
+	ctx.arc(0,0, this.radius, 0, Math.PI*2, false);
+	ctx.strokeStyle = "red";
+	ctx.stroke();
+	ctx.closePath();
 	ctx.restore();
 };
 
