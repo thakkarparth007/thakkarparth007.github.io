@@ -26,7 +26,7 @@
 					parent.postMessage({
 						event: 'fb-iframe-hack:response',
 						callid: e.data.callid,
-						cbArgs: Array.slice.prototype.apply(arguments)
+						cbArgs: Array.prototype.slice.apply(arguments)
 					}, getParameterByName('original_origin'));
 				});
 				FB[e.data.fn].apply(FB, e.data.args);
