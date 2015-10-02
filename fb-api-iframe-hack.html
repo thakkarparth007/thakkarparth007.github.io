@@ -14,28 +14,23 @@
 		}
 		window.fbAsyncInit = function () {
 			// init the FB JS SDK
-			FB.init({
-				appId:getParameterByName('appId'), // App ID from the App Dashboard
-				status:getParameterByName('status') == "true", // check the login status upon init?
-				cookie:getParameterByName('cookie') == "true", // set sessions cookies to allow your server to access the session?
-				xfbml:getParameterByName('xfbml') == "true" // parse XFBML tags on this page?
-			});
-			// notify the parent about the initialization
 			parent.postMessage({ event: 'fb-iframe-hack:init' });
 
 			window.addEventListener('message', function(e) {
-				if(e.origin != getParameterByName('url'));
+				if(e.origin != getParameterByName('url'))
+					return;
 
 				// add a callback to the arguments list
 				e.data.args.push(function() {
 					parent.postMessage({
 						event: 'fb-iframe-hack:response',
 						callid: e.data.callid,
-						cbArgs: Array.slice.prototype.apply(arguments))
+						cbArgs: Array.slice.prototype.apply(arguments)
 					});
 				});
 				FB[e.data.fn].apply(FB, e.data.args);
 			});
+		};
 
 		// Load the SDK's source Asynchronously
 		// Note that the debug version is being actively developed and might
