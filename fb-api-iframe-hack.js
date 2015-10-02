@@ -34,29 +34,30 @@
 		document.getElementsByTagName('body')[0].appendChild(iframe);
 	};
 
-	/*// app_url = the url given in the FB app settings
-	FB.init = function(options) { // this could be done faster with the livequery() plugin for jquery
-		var queryString = "?";
-		var props = Object.getOwnProperties(options);
-		for(var i in props) {
-			queryString += props[i] + "=" + encodeURIComponent(options[props[i]]) + "&";
-		}
-	};*/
-
 	var api = ["__globalCallbacks", "api", "AppEvents", "getLoginStatus", "getAuthResponse", "init",
 			   "getAccessToken", "getUserID", "login", "logout", "Canvas", "Event", "Frictionless", "ui", "XFBML"];
 	for(var k in api) {
 		(function(key) {
 			FB[key] = function() {
-				var cb = Array.prototype.splice.call(arguments, -1);
-				var callid = Date.now() + Math.random();
+				args = Array.prototype.slice.apply(arguments);
+
+				var cb = null;
+				for(var i in args) {
+					if(typeof args[i] == 'function') {
+						cb = args[i];
+						args[i] = null;
+						break;
+					}
+				}
+				
+				var callid = Date.now() + "" + Math.random();
 				cb_account[callid] = cb;
 
 				// send the message to the iframe so that the ACTUAL FB object can do its work.
 				iframe.contentWindow.postMessage({
 					fn: key,
 					callid: callid,
-					args: Array.prototype.slice.apply(arguments)
+					args: args
 				}, iframe_origin);
 			};
 		})(api[k]);
@@ -70,7 +71,8 @@
 			window.fbAsyncInit();
 		}
 		else if(e.data.event == 'fb-iframe-hack:response') {
-			cb_account[e.data.callid].apply(this, e.data.cbArgs);
+			if(typeof cb_account[e.data.callid] == 'function')
+				cb_account[e.data.callid].apply(this, e.data.cbArgs);
 			delete cb_account[e.data.callid];
 		}
 		// else, ignore

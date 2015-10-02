@@ -4,7 +4,6 @@
 	<meta charset="utf-8">
 </head>
 <body>
-	<div id="fb-root"></div>
 	<script>
 		function getParameterByName(name) {
 			name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -14,7 +13,6 @@
 		}
 		window.fbAsyncInit = function () {
 			// init the FB JS SDK
-			document.body.innerHTML = (getParameterByName('original_origin'));
 			parent.postMessage({ event: 'fb-iframe-hack:init' }, getParameterByName('original_origin'));
 
 			window.addEventListener('message', function(e) {
@@ -22,28 +20,35 @@
 					return;
 
 				// add a callback to the arguments list
-				e.data.args.push(function() {
+				var cb = function() {
 					parent.postMessage({
 						event: 'fb-iframe-hack:response',
 						callid: e.data.callid,
 						cbArgs: Array.prototype.slice.apply(arguments)
 					}, getParameterByName('original_origin'));
-				});
+				};
+				for(var i in e.data.args) {
+					if(e.data.args[i] === null) {
+						e.data.args[i] = cb;
+						break;
+					}
+				}
+
+				
 				FB[e.data.fn].apply(FB, e.data.args);
 			});
+
 		};
 
 		// Load the SDK's source Asynchronously
-		// Note that the debug version is being actively developed and might
-		// contain some type checks that are overly strict.
-		// Please report such bugs using the bugs tool.
 		(function(d, s, id){
 			var js, fjs = d.getElementsByTagName(s)[0];
 			if (d.getElementById(id)) {return;}
 			js = d.createElement(s); js.id = id;
-			js.src = "//connect.facebook.net/en_US/sdk.js";
+			js.src = "https://connect.facebook.net/en_US/sdk.js";
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));
 	</script>
+
 </body>
 </html>
