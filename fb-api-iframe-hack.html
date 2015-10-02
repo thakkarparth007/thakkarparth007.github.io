@@ -6,15 +6,17 @@
 <body>
 	<div id="fb-root"></div>
 	<script>
+		console.log("Lulllz");
 		function getParameterByName(name) {
 			name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 			var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-				results = regex.exec(location.search);
+			results = regex.exec(location.search);
 			return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 		}
 		window.fbAsyncInit = function () {
 			// init the FB JS SDK
-			parent.postMessage({ event: 'fb-iframe-hack:init' });
+			document.body.innerHTML = (getParameterByName('original_origin'));
+			parent.postMessage({ event: 'fb-iframe-hack:init' }, getParameterByName('original_origin'));
 
 			window.addEventListener('message', function(e) {
 				if(e.origin != getParameterByName('url'))
@@ -26,7 +28,7 @@
 						event: 'fb-iframe-hack:response',
 						callid: e.data.callid,
 						cbArgs: Array.slice.prototype.apply(arguments)
-					});
+					}, getParameterByName('original_origin'));
 				});
 				FB[e.data.fn].apply(FB, e.data.args);
 			});
@@ -36,17 +38,13 @@
 		// Note that the debug version is being actively developed and might
 		// contain some type checks that are overly strict.
 		// Please report such bugs using the bugs tool.
-		(function (d, debug) {
-			var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-			if (d.getElementById(id)) {
-				return;
-			}
-			js = d.createElement('script');
-			js.id = id;
-			js.async = true;
-			js.src = "https://connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
-			ref.parentNode.insertBefore(js, ref);
-		}(document, /*debug*/ true));
-</script>
+		(function(d, s, id){
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
 </body>
 </html>

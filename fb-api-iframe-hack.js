@@ -28,7 +28,8 @@
 		iframe_origin = app_url + (app_url.lastIndexOf('/') == app_url.length-1 ? '' : '/');
 		elt = document.createElement('iframe');
 		elt.id = 'facebook_load_frame';
-		elt.src = iframe_origin + 'fb-api-iframe-hack.html?app_url=' + encodeURIComponent(app_url);
+		elt.src = iframe_origin + 'fb-api-iframe-hack.html?app_url=' + encodeURIComponent(app_url) + 
+								  '&original_origin=' + encodeURIComponent(window.location.origin);
 		document.getElementsByTagName('body')[0].appendChild(elt);
 	};
 
