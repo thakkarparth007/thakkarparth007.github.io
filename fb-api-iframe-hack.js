@@ -4,7 +4,7 @@
 
 	The following code includes an invisible iframe pointing to the "/fb-api-iframe-hack.html"
 	page, located at the specified host. The "specified host" must be the url given 
-	in the FB app settings. The "specified host" is specified (sic) via the 
+	as the parameter to FB.loadAPI() function. The "specified host" is specified (sic) via the 
 	`app_url` option to the FB.init() method. 
 	The code also creates a stub FB object and then uses window.postMessage 
 	to deal with the FB api, which is loaded in the iframe. This hacky approach 
@@ -24,23 +24,22 @@
 	var FB = {};
 	var iframe_origin = '';
 
-	// app_url = the url given in the FB app settings
-	FB.init = function(options) { // this could be done faster with the livequery() plugin for jquery
-		var app_url = "" + options.app_url;
+	FB.loadAPI = function(app_url) {
 		iframe_origin = app_url + (app_url.lastIndexOf('/') == app_url.length-1 ? '' : '/');
-		delete options.app_url;
+		elt = document.createElement('iframe');
+		elt.id = 'facebook_load_frame';
+		elt.src = iframe_origin + 'fb-api-iframe-hack.html?app_url=' + encodeURIComponent(app_url);
+		document.getElementsByTagName('body')[0].appendChild(elt);
+	};
 
+	/*// app_url = the url given in the FB app settings
+	FB.init = function(options) { // this could be done faster with the livequery() plugin for jquery
 		var queryString = "?";
 		var props = Object.getOwnProperties(options);
 		for(var i in props) {
 			queryString += props[i] + "=" + encodeURIComponent(options[props[i]]) + "&";
 		}
-
-		elt = document.createElement('iframe');
-		elt.id = 'facebook_load_frame';
-		elt.src = iframe_origin + 'fb-api-iframe-hack.html' + queryString;
-		document.getElementsByTagName('body')[0].appendChild(elt);
-	};
+	};*/
 
 	var api = ["__globalCallbacks", "api", "AppEvents", "getLoginStatus", "getAuthResponse", 
 			   "getAccessToken", "getUserID", "login", "logout", "Canvas", "Event", "Frictionless", "ui", "XFBML"];
