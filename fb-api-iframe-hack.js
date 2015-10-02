@@ -23,14 +23,15 @@
 	var cb_account = {};
 	var FB = {};
 	var iframe_origin = '';
+	var iframe = null;
 
 	FB.loadAPI = function(app_url) {
 		iframe_origin = app_url + (app_url.lastIndexOf('/') == app_url.length-1 ? '' : '/');
-		elt = document.createElement('iframe');
-		elt.id = 'facebook_load_frame';
-		elt.src = iframe_origin + 'fb-api-iframe-hack.html?app_url=' + encodeURIComponent(app_url) + 
+		iframe = document.createElement('iframe');
+		iframe.id = 'facebook_load_frame';
+		iframe.src = iframe_origin + 'fb-api-iframe-hack.html?app_url=' + encodeURIComponent(app_url) + 
 								  '&original_origin=' + encodeURIComponent(window.location.origin);
-		document.getElementsByTagName('body')[0].appendChild(elt);
+		document.getElementsByTagName('body')[0].appendChild(iframe);
 	};
 
 	/*// app_url = the url given in the FB app settings
@@ -52,7 +53,7 @@
 				cb_account[callid] = cb;
 
 				// send the message to the iframe so that the ACTUAL FB object can do its work.
-				window.postMessage({
+				iframe.postMessage({
 					fn: key,
 					callid: callid,
 					args: Array.arguments
