@@ -18,7 +18,7 @@
 			parent.postMessage({ event: 'fb-iframe-hack:init' }, getParameterByName('original_origin'));
 
 			window.addEventListener('message', function(e) {
-				if(e.origin != getParameterByName('url'))
+				if(e.origin != getParameterByName('original_origin'))
 					return;
 
 				// add a callback to the arguments list

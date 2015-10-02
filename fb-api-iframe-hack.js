@@ -53,10 +53,10 @@
 				cb_account[callid] = cb;
 
 				// send the message to the iframe so that the ACTUAL FB object can do its work.
-				iframe.postMessage({
+				iframe.contentWindow.postMessage({
 					fn: key,
 					callid: callid,
-					args: Array.arguments
+					args: Array.prototype.slice.apply(arguments)
 				}, iframe_origin);
 			};
 		})(api[k]);
