@@ -47,7 +47,7 @@
 	for(var k in api) {
 		(function(key) {
 			FB[key] = function() {
-				var cb = Array.prototype.splice.apply(arguments, -1);
+				var cb = Array.prototype.splice.call(arguments, -1);
 				var callid = Date.now() + Math.random();
 				cb_account[callid] = cb;
 
