@@ -42,7 +42,8 @@
 		document.getElementsByTagName('body')[0].appendChild(elt);
 	};
 
-	var api = ["__globalCallbacks", "api", "AppEvents", "getLoginStatus", "getAuthResponse", "getAccessToken", "getUserID", "login", "logout", "Canvas", "Event", "Frictionless", "ui", "XFBML"];
+	var api = ["__globalCallbacks", "api", "AppEvents", "getLoginStatus", "getAuthResponse", 
+			   "getAccessToken", "getUserID", "login", "logout", "Canvas", "Event", "Frictionless", "ui", "XFBML"];
 	for(var k in api) {
 		(function(key) {
 			FB[key] = function() {
@@ -55,15 +56,23 @@
 					fn: key,
 					callid: callid,
 					args: Array.arguments
-				}, );
+				}, iframe_origin);
 			};
 		})(api[k]);
 	}
 
 	// iframe sends a message - response to some previous call.
 	window.addEventListener('message', function(e) {
-		cb_account[e.data.callid].apply(this, e.data.cbArgs);
-		delete cb_account[e.data.callid];
+		// call the window.fbAsyncInit method when the iframe says it's loaded 
+		// the api.
+		if(e.data.event == 'fb-iframe-hack:init') {
+			window.fbAsyncInit();
+		}
+		else if(e.data.event == 'fb-iframe-hack:response') {
+			cb_account[e.data.callid].apply(this, e.data.cbArgs);
+			delete cb_account[e.data.callid];
+		}
+		// else, ignore
 	});
 
 	window.FB = FB;
