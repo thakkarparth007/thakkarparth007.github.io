@@ -14,10 +14,10 @@
 		<nav id="navbar">
 			<ul>
 				<li><a href="#intro" class="selected curl_effect">Intro</a></li>
-				<li><a href="#what_do_i_do">What do I do?</a></li>
+				<li><a href="#writings">Writings</a></li>
 				<li><a href="#projects">Projects</a></li>
-				<li><a href="#interests">Interests</a></li>
 				<li><a href="#contact">Contact</a></li>
+				<li><a href="#resume">Resume</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -48,106 +48,94 @@
 				</p>
 			</div>
 
-			<div id="what_do_i_do" class="text">
-				<h1>What do I do?</h1>
+			<div id="writings" class="text">
+				<h1>Writings</h1>
 				<p>
-					I am a student at <a href="http://nitt.edu">NIT Trichy</a>, pursuing 
-					CSE. Most of my time is spent reading, chatting, coding or thinking 
-					of the brand new PJ.
+                    I have written a couple of articles:
+                    <ul>
+                        <li>
+                            <a href="https://medium.com/delta-force/understanding-bitcoin-architecture-and-some-distributed-systems-stuff-part-1-928cbff90276" class="proj_link">Doing Distributed Systems - the Bitcoin way! (Part 1)</a>
+                            <div class="proj_desc">
+                                <p>This is part 1 of the (incomplete) two-part blog post explaining some ideas about Bitcoin, Blockchains and basic Distributed Systems concepts.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="https://docs.google.com/document/d/17B8z3mntcM8cwRCfTKHHNDuT6iHVd1L6tplCufnWVc0/edit?usp=sharing" class="proj_link">Bitcoin Protocol High Level Overview</a>
+                            <div class="proj_desc">
+                                <p>This is the full draft (both part 1 and part 2) of "Doing Distributed Systems - the Bitcoin way!". Unfortunately I never got around to publishing part 2. However this draft is nearly complete.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="https://docs.google.com/document/d/1qLpQ0MbCWwbPP8VFTKwO9iKnZyfxUbD5nrwH1_iq4uA/edit?usp=sharing" class="proj_link">Exploring the Partition Numbers</a>
+                            <div class="proj_desc">
+                                <p>Something I wrote a long while back, describing some math behind partition numbers.</p>
+                            </div>
+                        </li>
 				</p> 
 
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</p>
 			</div>
 
 			<div id="projects" class="text">
 				<h1>Projects</h1>
 				<p>
-					I've mostly done small projects. Here are the links to some of those:
+					I've listed some of the important projects I've worked on:
 					<ul>
 						<li>
-							<a href="" class="proj_link">Console based calculator (C++)</a>
-							<div class="proj_desc">
-								<p>I had created this while reading "Programming: Principles and Practice Using C++". 
-								It is slightly more advanced than the code given in the book. Of course, there are
-								bugs too.</p>
-
-								<p><em>Warning:</em> I had written it around 2-3 years back. I haven't gone through the code 
-								since then.</p>
-							</div>
+                            <a class="proj_link" href="https://github.com/delta/generic-applications-portal">Generic Applications Portal</a>
+                            <div class="proj_desc">
+                                <p>This is essentially an HTML-based DSL along with a lot of extra magic, that makes writing complex form-based applications very simple. The developer writes one file in an HTML-like language, and can specify all the fields, along with their validation rules. He can also use a bunch of fairly useful built-in controls, or he can also mix in regular HTML elements in the markup. This is then compiled to generate frontend and backend-related code.</p>
+                                <p>Using this, writing form-based websites that have 100s of fields becomes very, very simple - as I have experienced while developing the admissions portal for PhD/MS for our college.</p>
+                                <p>While the features are more or less complete, proper usage documentation is yet to be added.</p>
+                            </div>
 						</li>
 						<li>
-							<a href="./calculator.html" class="proj_link">Another calculator (web-based)</a>
-							<div class="proj_desc">
-								<p>
-								I had created this as a part of an induction task for the 
-								<a href="spider.nitt.edu">Spider club</a>.</p>
-							</div>
+                            <a class="proj_link" href="https://github.com/thakkarparth007/dalal-street-server">Dalal Street</a>
+                            <div class="proj_desc">
+                                <p>
+                                    Dalal Street is an online virtual stock exchange event in <a href="https://pragyan.org">Pragyan</a>, the techfest of NIT Trichy. Players compete against other players and bots by trading stocks in real time to get rich. The 2018 edition of Dalal Street received participation of 500+ people.
+                                </p>
+                                <p>
+                                    The core components of the system were the react-based website, android app, bots written in python, GoLang based server (including matching engine), all of which communicated over gRPC.
+                                </p>
+                            </div>
 						</li>
 						<li>
-							<a href="http://parth.uc01.clc.af.cm" class="proj_link">Scribblepad</a>
-							<div class="proj_desc">
-								<p>
-								I had created this while I was in the 11<sup>th</sup> standard. I often found 
-								the need to discuss mathematics and physics problems with my friend. Doing that
-								over telephone wasn't very convenient. Plus, I did not have access to 
-								high speed internet that I could video chat. So, I created this. A "pad" where 
-								multiple people can scribble and chat. It is <em>not</em> very advanced. In 
-								fact the code might even be overly complicated. I'm not maintaining the code 
-								anymore.</p>
-
-								<p>
-									My friend and I used this a <b><em>lot!</em></b>
-								</p>
-							</div>
+                            <a class="proj_link" href="https://github.com/delta/rembook">RemBook</a>
+                            <div class="proj_desc">
+                                <p>
+                                    <a href="./assets/remtraffic.jpg" target="_blank"><img src="./assets/remtraffic.jpg" style="float: right; margin: 10px" width="240" height="180"/></a>
+                                    RemBook is like the yearbook for graduating students of NIT Trichy. It is used by both UG and PG students alike. It is one of the most heavy traffic applications in our campus (the image shows about 20% of total traffic). This is a single-page application, and taught me the importance of caching in such a heavily used system. One of the most satisfying projects I've worked on!
+                                </p>
+                            </div>
 						</li>
-						<li>
-							<a href="./galaxy_destruction/" class="proj_link">Galaxy Destruction</a>
-							<div class="proj_desc">
-								<p>
-								Just a simple 2 player game (both players on the same keyboard). 
-								The goal is to destroy the other space ship before it destroys you.
-								</p>
-
-								<p>
-									<b><u>Controls:</u></b><br>
-									WASD (navigation), Space (laser), Q (bullets)<br>
-									Arrow keys (navigation), Numpad0 (laser), Enter (bullets)
-								</p>
-							</div>
-						</li>
+                        <li>
+                            Rest of the projects can be viewed on my <a href="https://github.com/thakkarparth007">Github</a>.
+                        </li>
 					</ul>
-				</p>
-			</div>
-
-			<div id="interests" class="text">
-				<h1>Interests</h1>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 				</p>
 			</div>
 
 			<div id="contact" class="text">
 				<h1>Contact</h1>
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    You can email me on:<br> <i><u>thakkarparth007</u></i> at gmail dot com
+				</p>
+                <p>
+                    My LinkedIn profile can be found <a href="https://www.linkedin.com/in/thakkar-parth/">here</a>.
+                </p>
+                <p>
+                    My Github profile is <a href="https://github.com/thakkarparth007">here</a>.
+                </p>
+			</div>
+
+			<div id="resume" class="text">
+				<h1>Resume</h1>
+				<p>
+                    My Resume can be viewed <a href="/resume.pdf">here</a>.
 				</p>
 			</div>
-		</div>
+        </div>
+    <div style="text-align: center; color: #aaa; margin-top: -50px; padding-left: 30px;">Copyright &copy; 2018 Parth Thakkar</div>
 	</div>
 
 	<script type="text/javascript">
@@ -189,7 +177,7 @@
 		}
 
 		(function() {
-			var ids = "intro what_do_i_do projects interests contact".split(" ");
+			var ids = "intro writings projects contact resume".split(" ");
 			var link_btns = ids.map(function(id) {	return $("a[href='#" + id + "']");	});
 			
 			var pages = [];
