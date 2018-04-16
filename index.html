@@ -23,47 +23,69 @@
 	}
 	body {
 		text-align: center;
+        background: #252525;
+        font-family: Ubuntu;
 	}
 	header {
 		position: fixed;
 		left: 0;
 		right: 0;
-		height: 70px;
-		background: #01579B;
-		box-shadow: 0 2px 5px #000;
+		/*background: #01579B;
+        /*background: #252525;
+		box-shadow: 0 2px 5px #000, 0 0 1px #000 inset;;*/
 		z-index: 5;
-		text-align: right;
 		color: white;
-		font-size: 24pt;
+		font-size: 20pt;
 		font-weight: bold;
-		line-height: 70px;
-		padding-right: 30px;
+		padding: 10px 0 15px 0;
+        background: rgba(37,37,37,0.97)
 	}
+    #snowman {
+        position: absolute;
+        left: -45px;
+        top: -7px;
+        width: 40px;
+        height: 40px;
+        -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+        filter: grayscale(100%);
+		-webkit-transition: 0.1s all;
+		-moz-transition: 0.1s all;
+		-o-transition: 0.1s all;
+		-ms-transition: 0.1s all;
+		transition: 0.1s all;
+        background-image: url(./assets/snowman.png);
+        background-position: fixed center;
+        background-size: 40px 40px;
+        display: inline-block;
+    }
+    header:hover #snowman {
+        -webkit-filter: none;
+        filter: none;
+        background-image: url(./assets/snowman2.png);
+        background-position: fixed center; /*no-repeat fixed;*/
+        background-size: 40px 40px;
+    }
+    header #title {
+        display: inline;
+        font-size: 18pt;
+        color: #ccc;
+        position: relative;
+    }
 	#navbar {
-		position: fixed;
-		margin-left: -30px;
-		top: 60px;
-		bottom: 0;
-		width: 180px;
-		font-family: sans-serif;
-		z-index: 10;
+        margin-top: 10px;
 	}
 	#navbar ul {
-		position: absolute;
-		bottom: 0;
 		padding: 0;
-		z-index: 3;
+        margin: 0;
 	}
 	#navbar ul li {
 		list-style: none;
 		text-align: left;
+        display: inline;
 	}
 	#navbar a {
 		text-decoration: none;
-		display: block;
-		padding: 10px;
-		width: 200px;
-		margin-bottom: 10px;
+		padding: 5px;
 		color: white;
 		border-radius: 0 5px 5px 0;
 		background: rgba(255,255,255,0.8);
@@ -77,16 +99,9 @@
 
 		box-shadow: 0px 0 2px black;
 		background: white;
-	}
-	#navbar a.selected, #navbar a:hover, #navbar a:active {
-		border-radius: 0 10px 10px 0;
-		width: 220px;
-		background: #01579B;
-		color: white;
-		box-shadow: 0px 1px 2px #000;
-		padding-left: 25px;
-		padding: 20px 20px 20px 25px;
-		font-weight: bold;
+
+        font-size: 15px;
+        font-weight: normal;
 	}
 	#navbar a:not(.selected):hover, #navbar a:not(.selected):active {
 		background: #03a9f4;
@@ -95,6 +110,16 @@
 		padding: 10px 10px 10px 25px;
 		font-weight: normal;
 		width: 210px;
+	}
+	#navbar a.selected, #navbar a:hover, #navbar a:active {
+		border-radius: 0 10px 10px 0;
+		width: 220px;
+		background: #01579B;
+		color: white;
+		box-shadow: 0px 1px 2px #000;
+		padding-left: 25px;
+		padding: 10px 10px 10px 25px;;
+		font-weight: bold;
 	}
 	#main {
 		margin: 0 7%;
@@ -110,7 +135,7 @@
 	}
 	#dp_container {
 		margin: 0 auto;
-		margin-top: -10px;
+		margin-top: 15px;
 		display: block;
 		
 		height: 196px;
@@ -152,6 +177,7 @@
 		text-shadow: 0 0 1px black;
 		color: #01579B;
 		font-size: 40pt;
+        color: white
 	}
 	#page_container {
 		margin-left: 230px;
@@ -167,6 +193,7 @@
 		padding-top: 100px;
 		padding-left: 30px;
 		padding-right: 30px;
+        color: white;
 	}
 	.text a {
 		text-decoration: none;
@@ -325,11 +352,10 @@
 </head>
 <body>
 	<header>
-		
-	</header>
-	<div id="main">
+            <h2 id='title'>
+            <span id='snowman'>&nbsp;</span>
+            thakkarparth007</h2>
 		<nav id="navbar">
-			<div id="dp_container" class="curl_effect"><img id="dp"></div>
 			<ul>
 				<li><a href="#intro" class="selected curl_effect">Intro</a></li>
 				<li><a href="#what_do_i_do">What do I do?</a></li>
@@ -338,8 +364,11 @@
 				<li><a href="#contact">Contact</a></li>
 			</ul>
 		</nav>
+	</header>
+	<div id="main">
 		<div id="page_container">
 			<div id="intro" class="text">
+			<div id="dp_container" class="curl_effect"><img id="dp"></div>
 				<h1>I'm Parth Thakkar</h1>
 				<p>
 					Hi! My name is Parth, and I am a student of NIT Trichy.
@@ -485,7 +514,7 @@
 			elem.classList.add("selected");
 			elem.classList.add("curl_effect");
 			//alert()
-			$("header").innerHTML = $("#" + elem.href.split("#")[1] + " h1").innerHTML;
+			//$("header").innerHTML = $("#" + elem.href.split("#")[1] + " h1").innerHTML;
 			return false;
 		}
 
