@@ -6,6 +6,11 @@
 	<title>Parth Thakkar</title>
     <!--<script>window.location="https://thakkarparth007.github.io/resume.pdf"</script>-->
 	<style type="text/css">
+	@font-face {
+	  font-family: 'Meslo LG';
+	  font-style: normal;
+	  src: local('Meslo LG S'), url(./assets/MesloLGS-Regular.ttf) format('truetype');
+	}
 	* {
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
@@ -24,7 +29,7 @@
 	body {
 		text-align: center;
         background: #252525;
-        font-family: Ubuntu;
+		font-family: "Menlo", "Meslo LG", monospace;
 	}
 	header {
 		position: fixed;
@@ -38,7 +43,9 @@
 		font-size: 20pt;
 		font-weight: bold;
 		padding: 10px 0 15px 0;
-        background: rgba(37,37,37,0.97)
+        padding-top: 25px;
+        background: rgba(37,37,37,0.97);
+        font-family: Ubuntu;
 	}
     #snowman {
         position: absolute;
@@ -88,7 +95,7 @@
 		padding: 5px;
 		color: white;
 		border-radius: 0 5px 5px 0;
-		background: rgba(255,255,255,0.8);
+		/*background: rgba(255,255,255,0.8);*/
 		color: #01579b;
 
 		-webkit-transition: 0.1s all;
@@ -98,7 +105,7 @@
 		transition: 0.1s all;
 
 		box-shadow: 0px 0 2px black;
-		background: white;
+		/*background: white;*/
 
         font-size: 15px;
         font-weight: normal;
@@ -107,7 +114,7 @@
 		background: #03a9f4;
 		border-right: none;
 		border-radius: 0 10px 10px 0;
-		padding: 10px 10px 10px 25px;
+		padding: 5px 5px 5px 10px;
 		font-weight: normal;
 		width: 210px;
 	}
@@ -118,7 +125,7 @@
 		color: white;
 		box-shadow: 0px 1px 2px #000;
 		padding-left: 25px;
-		padding: 10px 10px 10px 25px;;
+		padding: 5px 5px 5px 15px;;
 		font-weight: bold;
 	}
 	#main {
@@ -134,9 +141,9 @@
 		width: 180px;
 	}
 	#dp_container {
-		margin: 0 auto;
-		margin-top: 15px;
-		display: block;
+		margin: 15px;
+		display: inline-block;
+        float: right;
 		
 		height: 196px;
 		width: 196px;
@@ -182,9 +189,11 @@
 	#page_container {
 		margin-left: 230px;
 		text-align: left;
+        width: 100%;
+        max-width: 39rem;
 	}
 	.text {
-		font-size: 16pt;
+		font-size: 12pt;
 		color: #01579B;
 		min-height: 730px;
 		/*height: calc(100vh - 70px);*/
@@ -369,7 +378,6 @@
 		<div id="page_container">
 			<div id="intro" class="text">
 			<div id="dp_container" class="curl_effect"><img id="dp"></div>
-				<h1>I'm Parth Thakkar</h1>
 				<p>
 					Hi! My name is Parth, and I am a student of NIT Trichy.
 					I hail from Gujarat, having spent 13 years over there.
