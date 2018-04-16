@@ -74,15 +74,21 @@
 	#navbar {
         margin-top: 10px;
 	}
-	#navbar ul {
+    #navbar2 {
+        float: right;
+    }
+	#navbar ul, #navbar2 ul {
 		padding: 0;
         margin: 0;
 	}
-	#navbar ul li {
+	#navbar ul li, #navbar2 ul li {
 		list-style: none;
 		text-align: left;
         display: inline;
 	}
+    #navbar2 a {
+        color: orange;
+    }
 	#navbar a {
 		text-decoration: none;
 		padding: 5px;
