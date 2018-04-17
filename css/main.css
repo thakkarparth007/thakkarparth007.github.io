@@ -233,7 +233,7 @@
 		text-decoration: underline;
 	}
 
-	@media(max-height: 550px) {
+/*	@media(max-height: 550px) {
 		#dp {
 			background: url(../assets/pic.jpg) 55% 0 / 178px 100px;
 			height: 90px;
@@ -262,7 +262,7 @@
 			padding: 1px;
 		}
 	}
-
+*/
 	@media(max-width: 900px) {
 		#main {
 			margin: 0 3%;
@@ -286,9 +286,27 @@
 	}
 
 	@media(max-height: 360px), (max-width: 800px) {
-		header { display: none; }
-		#dp_container { display: none; }
-		#navbar {
+		/*header { display: none; }
+		#dp_container { display: none; }*/
+        #dp_container {
+            display: block;
+            float: none;
+            margin: 0 auto;
+        }
+        #navbar a {
+            padding: 3px;
+            border-radius: 0;
+            box-shadow: none;
+            margin: 0;
+        }
+        header #snowman {
+            -webkit-filter: none;
+            filter: none;
+            background-image: url(../assets/snowman2.png);
+            background-position: fixed center; /*no-repeat fixed;*/
+            background-size: 40px 40px;
+        }
+/*		#navbar {
 			position: fixed;
 			top: 0;
 			left: 0;
@@ -347,7 +365,7 @@
 		}
 
 		.curl_effect { box-shadow: none; }
-		.curl_effect:after, .curl_effect:before { display: none; }
+		.curl_effect:after, .curl_effect:before { display: none; }*/
 		#main {
 			position: absolute;
 			top: 0;
