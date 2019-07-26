@@ -75,7 +75,7 @@
         margin-top: 10px;
 	}
     #navbar2 {
-        float: right;
+        /* float: right; */
     }
 	#navbar ul, #navbar2 ul {
 		padding: 0;
@@ -131,7 +131,7 @@
 	}
 	#main {
 		margin: 0 7%;
-		position: absolute;
+		/* position: absolute; */
 		top: 15px;;
 		bottom: 0;
 	}
@@ -189,7 +189,8 @@
         color: white
 	}
 	#page_container {
-		margin-left: 230px;
+		margin: 0 auto;
+		/* margin-left: 230px; */
 		text-align: left;
         width: 100%;
         max-width: 39rem;
