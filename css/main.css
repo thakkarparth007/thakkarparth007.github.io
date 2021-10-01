@@ -234,6 +234,10 @@
 		text-decoration: underline;
 	}
 
+	ul {
+		list-style: square;
+	}
+
 /*	@media(max-height: 550px) {
 		#dp {
 			background: url(../assets/pic.jpg) 55% 0 / 178px 100px;
