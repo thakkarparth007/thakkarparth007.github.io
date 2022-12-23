@@ -137,8 +137,9 @@
 	}
 	#dp {
 		display: block;
-		background: url(../assets/dp2.jpg) 55% 0 / 356px 200px;
-        background-size: 220px 220px;
+		background: url(../assets/dp3.jpg); /*55% 0 / 356px 200px;*/
+        /*background-size: 220px 220px;*/
+		background-size: cover;
 		height: 180px;
 		width: 180px;
 	}
@@ -194,15 +195,16 @@
 		text-align: left;
         width: 100%;
         max-width: 39rem;
+		padding-top: 100px;
 	}
 	.text {
         font-size: 14px;
         line-height: 1.725;
-		min-height: 730px;
+		/* min-height: 300px; */
 		/*height: calc(100vh - 70px);*/
 		padding-bottom: 30px;
 		/*box-shadow: 0 5px 10px -8px #000;*/
-		padding-top: 100px;
+		/* padding-top: 100px; */
 		padding-left: 30px;
 		padding-right: 30px;
         color: #bbb;
@@ -229,6 +231,8 @@
 	a.proj_link {
 		text-decoration: none;
 		color: darkgreen;
+		font-weight: bold;
+		font-size: 1.2em;
 	}
 	a.proj_link:hover {
 		text-decoration: underline;
